@@ -36,3 +36,10 @@ export interface ResponseUnit {
   description: string;
   status: boolean;
 }
+
+export interface ResponseGalery {
+  imageId: number
+  imageUrl: string
+  createdAt: string
+  imageName: string
+}
