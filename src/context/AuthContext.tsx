@@ -73,7 +73,7 @@ export default function AuthProvider({
     deleteUser();
     setToken("");
     Cookie.remove("token");
-    navigate("/");
+    navigate("/auth/login");
   };
 
   return (

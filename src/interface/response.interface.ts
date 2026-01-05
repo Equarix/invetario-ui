@@ -22,3 +22,12 @@ export interface UserResponse {
   token: string;
   //   stores: any[]
 }
+
+
+export interface ResponseCategories {
+  categoryId: number
+  name: string
+  description: string
+  status: boolean
+  products: any[]
+}
