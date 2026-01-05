@@ -2,14 +2,17 @@ import CardSingle from "@/components/components/card-single/CardSingle";
 import { useAuth } from "@/context/AuthContext";
 import type { ApiResponse, ResponseUnit } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
-import { Button, Card, CardBody, CardHeader } from "@heroui/react";
+import { Button, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LuPlus } from "react-icons/lu";
+import CreateUnit from "./create/CreateUnit";
 
 export default function UnitPage() {
   const { token } = useAuth();
-  const { isLoading, data } = useQuery<ApiResponse<ResponseUnit[]>>({
-    queryKey: ["units"],
+  const { onOpen, onOpenChange, isOpen } = useDisclosure();
+
+  const { data } = useQuery<ApiResponse<ResponseUnit[]>>({
+    queryKey: ["units", isOpen],
     queryFn: async () => {
       const res = await instance.get("/unit", {
         headers: {
@@ -26,7 +29,7 @@ export default function UnitPage() {
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white mb-4">Unidades</h1>
 
-        <Button color="primary" className="font-semibold">
+        <Button color="primary" className="font-semibold" onPress={onOpen}>
           <LuPlus size={16} />
           Agregar Unidad
         </Button>
@@ -42,6 +45,8 @@ export default function UnitPage() {
           />
         ))}
       </section>
+
+      <CreateUnit isOpen={isOpen} onClose={onOpenChange} />
     </div>
   );
 }
