@@ -2,8 +2,11 @@ import { Avatar, Button, ScrollShadow } from "@heroui/react";
 import { LuChevronsLeft } from "react-icons/lu";
 import { SideBarConfig } from "@/config/sidebard.config";
 import { SidebarItem } from "./SidebarItem";
+import { useAuth } from "@/context/AuthContext";
 
 export function Sidebar() {
+  const { user } = useAuth();
+
   return (
     <aside className="w-72 h-screen bg-[#121212] border-r border-zinc-800 flex flex-col p-4 text-white">
       {/* Header */}
@@ -12,11 +15,11 @@ export function Sidebar() {
           <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
             <div className="w-4 h-4 bg-black rounded-sm transform rotate-45 flex items-center justify-center">
               <span className="text-[10px] text-white -rotate-45 font-bold">
-                A
+                I
               </span>
             </div>
           </div>
-          <span className="font-bold tracking-tight">ACME</span>
+          <span className="font-bold tracking-tight">INVENTARIO</span>
         </div>
         <Button
           isIconOnly
@@ -35,8 +38,10 @@ export function Sidebar() {
           className="w-10 h-10 text-large"
         />
         <div className="flex flex-col">
-          <span className="text-sm font-semibold">Kate Moore</span>
-          <span className="text-xs text-zinc-500">Customer Support</span>
+          <span className="text-sm font-semibold">
+            {user?.firstName} {user?.lastName}
+          </span>
+          <span className="text-xs text-zinc-500">{user?.email}</span>
         </div>
       </div>
 
