@@ -35,7 +35,7 @@ export default function UnitPage() {
         </Button>
       </header>
 
-      <section className="w-full grid grid-cols-4 gap-2">
+      <section className="w-full grid grid-cols-4 gap-2 mt-4">
         {data?.data.map((u) => (
           <CardSingle
             status={u.status}

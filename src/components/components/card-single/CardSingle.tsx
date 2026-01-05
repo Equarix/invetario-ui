@@ -3,7 +3,6 @@ import {
   CardBody,
   CardHeader,
   Chip,
-  Image,
   Divider,
   CardFooter,
 } from "@heroui/react";
@@ -11,7 +10,6 @@ import { MdInventory } from "react-icons/md";
 import { Button } from "@heroui/react";
 import { MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
-
 
 interface CardSingleProps {
   title: string;
@@ -45,13 +43,13 @@ export default function CardSingle({
       <Divider className="bg-gray-800" />
       <CardFooter>
         <div className="flex gap-4 items-center">
-      <Button color="success" endContent={<MdEdit />}>
-        Editar
-      </Button>
-      <Button color="danger" startContent={<FaTrash />} variant="bordered">
-        Delete
-      </Button>
-    </div>
+          <Button color="success" endContent={<MdEdit />}>
+            Editar
+          </Button>
+          <Button color="danger" startContent={<FaTrash />} variant="bordered">
+            Delete
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
