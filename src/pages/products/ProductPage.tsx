@@ -15,9 +15,10 @@ import {
   Image,
 } from "@heroui/react";
 import { MdInventory } from "react-icons/md";
+import { Chip } from "@heroui/react";
 
 export default function ProductPage() {
-  const condicion = true;
+  const condicion = false;
   const { token } = useAuth();
   const { data, isLoading } = useQuery<ApiResponse<ResponseCategories[]>>({
     queryKey: ["products"],
@@ -39,23 +40,28 @@ export default function ProductPage() {
     <div>
       {
         <div>
-          <Card className="max-w-[400px]">
-            <CardHeader className="flex gap-3">
-              <MdInventory />
-              <p className="text-md font-bold">Agua</p>
+          <Card className="max-w-[400px] bg-zinc-800">
+            <CardHeader className="overflow-visible py-3">
+              <Image
+                src="/src/assets/images/frutas.jpg"
+                alt="Card Image"
+                className="rounded-lg"
+              />
             </CardHeader>
-            <Divider />
-            <CardBody>
-              <p>Recipiente portátil diseñado para contener líquidos.</p>
+            <CardBody className="flex flex-row pb-0 pt-2 px-4 py-3 items-start justify-between">
+              <div>
+                <h4 className="font-bold text-large text-white">Frutas</h4>
+                <small className="text-default-500 text-white">
+                  24 Tipos disponibles
+                </small>
+              </div>
+              <Chip
+                color={condicion ? "success" : "danger"}
+                className=" self-end text-tiny uppercase font-bold"
+              >
+                {condicion ? "Activo" : "Inactivo"}
+              </Chip>
             </CardBody>
-            <Divider />
-            <CardFooter
-              className={`font-semibold ${
-                condicion ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {condicion ? "Activo" : "Inactivo"}
-            </CardFooter>
           </Card>
         </div>
       }
