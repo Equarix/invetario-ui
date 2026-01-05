@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import AuthRoutes from "./routes/auth/Auth.routes";
 import DashboardRoutes from "./routes/dashboard/Dashboard.routes";
-import Layout from "./components/layouts/layout";
+import Layout from "./components/layouts/Layout";
 
 export default function App() {
   return (

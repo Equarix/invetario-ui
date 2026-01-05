@@ -23,11 +23,16 @@ export interface UserResponse {
   //   stores: any[]
 }
 
-
 export interface ResponseCategories {
-  categoryId: number
-  name: string
-  description: string
-  status: boolean
-  products: any[]
+  categoryId: number;
+  name: string;
+  description: string;
+  status: boolean;
+}
+
+export interface ResponseUnit {
+  unitId: number;
+  name: string;
+  description: string;
+  status: boolean;
 }
