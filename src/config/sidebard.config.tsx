@@ -1,6 +1,7 @@
 import type { SidebarItemProps } from "@/components/layouts/Sidebar/SidebarItem";
 import { LuHouse } from "react-icons/lu";
 import { PiStackPlusBold } from "react-icons/pi";
+import { TbCategory2 } from "react-icons/tb";
 
 interface SideBarConfigProps {
   body: SidebarItemProps[];
@@ -19,6 +20,11 @@ export const SideBarConfig: SideBarConfigProps = {
       icon: <PiStackPlusBold />,
       label: "Unidades",
     },
+    {
+      href: "/categorias",
+      icon: <TbCategory2 />,
+      label: "Categorias",
+    }
   ],
   footer: [],
 };
