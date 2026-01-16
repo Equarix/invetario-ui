@@ -1,8 +1,9 @@
 import type { SidebarItemProps } from "@/components/layouts/Sidebar/SidebarItem";
 import { LuHouse } from "react-icons/lu";
 import { PiStackPlusBold } from "react-icons/pi";
-import { TbCategory2 } from "react-icons/tb";
+import { TbCategory2, TbShoppingCart } from "react-icons/tb";
 import { IoImageOutline } from "react-icons/io5";
+import { RiStore2Line } from "react-icons/ri";
 
 interface SideBarConfigProps {
   body: SidebarItemProps[];
@@ -30,8 +31,17 @@ export const SideBarConfig: SideBarConfigProps = {
       href: "/galeria",
       icon: <IoImageOutline />,
       label: "Galeria",
-    }
-    
+    },
+    {
+      href: "/productos",
+      icon: <TbShoppingCart />,
+      label: "Productos",
+    },
+    {
+      href: "/almacenes",
+      icon: <RiStore2Line />,
+      label: "Almacenes",
+    },
   ],
   footer: [],
 };

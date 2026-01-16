@@ -38,8 +38,51 @@ export interface ResponseUnit {
 }
 
 export interface ResponseGalery {
-  imageId: number
-  imageUrl: string
-  createdAt: string
-  imageName: string
+  imageId: number;
+  imageUrl: string;
+  createdAt: string;
+  imageName: string;
+}
+
+export interface ResponseStore {
+  storeId: number;
+  name: string;
+  code: string;
+  address: string;
+  phone: string;
+  maxCapacity: number;
+  status: boolean;
+  type: string;
+  user: UserResponse;
+  createdAt: string;
+  observations: string;
+}
+
+export interface ResponseProductStore {
+  productStoreId: number;
+  product: Product;
+  actualStock: number;
+  reservedStock: number;
+  availableStock: number;
+  minStock: number;
+  maxStock: number;
+  avgCost: number;
+  lastCost: number;
+  status: boolean;
+  createdAt: string;
+}
+
+export interface Product {
+  productId: number;
+  codeInternal: string;
+  code: string;
+  name: string;
+  description: string;
+  category: ResponseCategories;
+  unit: ResponseUnit;
+  priceBuy: number;
+  priceSell: number;
+  minStock: number;
+  status: boolean;
+  image: ResponseGalery;
 }

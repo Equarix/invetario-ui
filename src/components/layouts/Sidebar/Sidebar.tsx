@@ -3,12 +3,12 @@ import { LuChevronsLeft } from "react-icons/lu";
 import { SideBarConfig } from "@/config/sidebard.config";
 import { SidebarItem } from "./SidebarItem";
 import { useAuth } from "@/context/AuthContext";
+import { HiOutlineMinusCircle } from "react-icons/hi";
 
 export function Sidebar() {
-  const { user } = useAuth();
-
+  const { user, logout } = useAuth();
   return (
-    <aside className="w-72 h-screen bg-[#121212] border-r border-zinc-800 flex flex-col p-4 text-white">
+    <aside className="w-72 h-screen sticky top-0 left-0 bg-[#121212] border-r border-zinc-800 flex flex-col p-4 text-white">
       {/* Header */}
       <div className="flex items-center justify-between mb-8 px-2">
         <div className="flex items-center gap-2">
@@ -32,7 +32,7 @@ export function Sidebar() {
       </div>
 
       {/* User Profile */}
-      <div className="flex items-center gap-3 mb-8 px-2">
+      <div className="flex items-center gap-3 mb-8 px-2 relative w-full">
         <Avatar
           src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
           className="w-10 h-10 text-large"
@@ -59,6 +59,15 @@ export function Sidebar() {
         {SideBarConfig.footer.map((item) => (
           <SidebarItem key={item.href} {...item} />
         ))}
+        <button
+          className="flex items-center gap-2 w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group text-zinc-400 hover:bg-zinc-800/50"
+          onClick={() => {
+            logout();
+          }}
+        >
+          <HiOutlineMinusCircle size={20} />
+          Cerrar sesión
+        </button>
       </div>
     </aside>
   );

@@ -1,0 +1,36 @@
+import { cn } from "@/utils/cn";
+import { Button } from "@heroui/react";
+import type { ReactElement } from "react";
+
+interface HeaderProps {
+  className?: {
+    header?: string;
+    h1?: string;
+    button?: string;
+  };
+  text: {
+    header: string;
+    button: string;
+  };
+  icon: ReactElement;
+}
+
+export default function Header({ className, text, icon }: HeaderProps) {
+  return (
+    <header
+      className={cn("flex items-center justify-between", className?.header)}
+    >
+      <h1 className={cn("text-2xl font-bold text-white mb-4", className?.h1)}>
+        {text.header}
+      </h1>
+
+      <Button
+        color="primary"
+        className={cn("font-semibold", className?.button)}
+      >
+        {icon}
+        {text.button}
+      </Button>
+    </header>
+  );
+}

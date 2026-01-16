@@ -43,7 +43,11 @@ export default function CardSingle({
       <Divider className="bg-gray-800" />
       <CardFooter>
         <div className="flex gap-4 items-center">
-          <Button color="success" endContent={<MdEdit />}>
+          <Button
+            color="success"
+            endContent={<MdEdit />}
+            className="text-white"
+          >
             Editar
           </Button>
           <Button color="danger" startContent={<FaTrash />} variant="bordered">
