@@ -8,6 +8,7 @@ export interface SidebarItemProps {
   badge?: string | number;
   hasPlus?: boolean;
   href: string;
+  isOpen?: boolean;
 }
 
 export function SidebarItem({
@@ -16,6 +17,7 @@ export function SidebarItem({
   badge,
   hasPlus,
   href,
+  isOpen,
 }: SidebarItemProps) {
   const { pathname } = useLocation();
 
@@ -32,10 +34,10 @@ export function SidebarItem({
       <div className="flex items-center gap-3">
         {isValidElement(Icon) &&
           cloneElement(Icon, {
-            size: 20,
+            size: 24,
             strokeWidth: pathname === href ? 2.5 : 2,
           })}
-        <span className="text-sm font-medium">{label}</span>
+        {isOpen && <span className="font-medium">{label}</span>}
       </div>
       <div className="flex items-center gap-2">
         {badge && (
