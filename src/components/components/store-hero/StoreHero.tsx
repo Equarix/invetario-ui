@@ -17,7 +17,7 @@ export default function StoreHero({ store }: StoreHeroProps) {
   if (!store) return null;
 
   return (
-    <Card className="w-full mb-6 bg-gradient-to-r from-background to-content2 border-none">
+    <Card className="w-full mb-6 bg-linear-to-r from-background to-content2 border-none">
       <CardHeader className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between py-4">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-primary/10 rounded-xl text-primary">
@@ -25,7 +25,7 @@ export default function StoreHero({ store }: StoreHeroProps) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
                 {store.name}
               </h1>
               <Chip

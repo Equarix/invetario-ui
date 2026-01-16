@@ -6,9 +6,9 @@ import type {
   ResponseStore,
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
-import { Chip } from "@heroui/react";
+import { Chip, Tooltip } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
-import { LuPlus } from "react-icons/lu";
+import { LuEye, LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { Link } from "react-router";
 
 export default function StorePage() {
@@ -32,7 +32,7 @@ export default function StorePage() {
       <Header
         text={{
           header: "Almacenes",
-          button: "Crear",
+          button: "Crear Almacén",
         }}
         icon={<LuPlus size={16} />}
       />
@@ -48,7 +48,10 @@ export default function StorePage() {
           {
             header: "Nombre",
             cell: ({ row: { original } }) => (
-              <Link to={`/almacenes/productos/${original.storeId}`}>
+              <Link
+                to={`/almacenes/productos/${original.storeId}`}
+                className="hover:underline"
+              >
                 {original.name}
               </Link>
             ),
@@ -89,6 +92,43 @@ export default function StorePage() {
           {
             header: "Fecha de Creación",
             accessorFn: (row) => new Date(row.createdAt).toLocaleDateString(),
+          },
+          {
+            header: "Acciones",
+            cell: ({ row: { original } }) => (
+              <div className="flex items-center gap-2">
+                <Tooltip
+                  color="secondary"
+                  content={`Ver Productos en ${original.name}`}
+                >
+                  <Link to={`/almacenes/productos/${original.storeId}`}>
+                    <Chip color="secondary">
+                      <LuEye />
+                    </Chip>
+                  </Link>
+                </Tooltip>
+
+                <Tooltip
+                  color="primary"
+                  content={`Editar Almacén ${original.name}`}
+                >
+                  <Link to={`/almacenes/editar/${original.storeId}`}>
+                    <Chip color="primary">
+                      <LuPen />
+                    </Chip>
+                  </Link>
+                </Tooltip>
+
+                <Tooltip
+                  color="danger"
+                  content={`Eliminar Almacén ${original.name}`}
+                >
+                  <Chip color="danger">
+                    <LuTrash />
+                  </Chip>
+                </Tooltip>
+              </div>
+            ),
           },
         ]}
       />

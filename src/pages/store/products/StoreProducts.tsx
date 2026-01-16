@@ -2,6 +2,7 @@ import Load from "@/components/components/load/Load";
 import StoreHero from "@/components/components/store-hero/StoreHero";
 import Table from "@/components/components/table/Table";
 import Header from "@/components/layouts/header/Header";
+import StoreHeroSkeleton from "@/components/skeleton/store-hero-skeleton/StoreHeroSkeleton";
 import { ENV } from "@/config/env";
 import { useAuth } from "@/context/AuthContext";
 import type {
@@ -10,8 +11,9 @@ import type {
   ResponseStore,
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
+import { Chip, Tooltip } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
-import { LuPlus } from "react-icons/lu";
+import { LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { useParams } from "react-router";
 
 export default function StoreProducts() {
@@ -52,7 +54,11 @@ export default function StoreProducts() {
     <div className="flex flex-col p-4 h-full w-full">
       <Load loading={isLoadingStore} />
 
-      <StoreHero store={resStore?.data} />
+      {isLoadingStore ? (
+        <StoreHeroSkeleton />
+      ) : (
+        <StoreHero store={resStore?.data} />
+      )}
 
       <Header
         text={{
@@ -111,6 +117,36 @@ export default function StoreProducts() {
           {
             header: "Precio de Venta",
             accessorKey: "product.priceSell",
+          },
+          {
+            header: "Estado",
+            cell: ({ row: { original } }) => (
+              <Chip
+                color={original.status ? "success" : "danger"}
+                classNames={{
+                  base: "text-white",
+                }}
+              >
+                {original.status ? "Activo" : "Inactivo"}
+              </Chip>
+            ),
+          },
+          {
+            header: "Acciones",
+            cell: () => (
+              <div className="flex items-center gap-2">
+                <Tooltip color="primary" content="Editar Producto en Almacén">
+                  <Chip color="primary">
+                    <LuPen />
+                  </Chip>
+                </Tooltip>
+                <Tooltip color="danger" content="Eliminar Producto del Almacén">
+                  <Chip color="danger">
+                    <LuTrash />
+                  </Chip>
+                </Tooltip>
+              </div>
+            ),
           },
         ]}
       />
