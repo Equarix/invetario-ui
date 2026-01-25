@@ -20,9 +20,14 @@ import { useForm } from "react-hook-form";
 interface CreateUnitProps {
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
 }
 
-export default function CreateUnit({ isOpen, onClose }: CreateUnitProps) {
+export default function CreateUnit({
+  isOpen,
+  onClose,
+  onConfirm,
+}: CreateUnitProps) {
   const { token } = useAuth();
 
   const {
@@ -49,6 +54,7 @@ export default function CreateUnit({ isOpen, onClose }: CreateUnitProps) {
         title: "Unidad creada exitosamente",
         color: "success",
       });
+      onConfirm?.();
     },
     onError: () => {
       addToast({

@@ -11,8 +11,8 @@ export default function UnitPage() {
   const { token } = useAuth();
   const { onOpen, onOpenChange, isOpen } = useDisclosure();
 
-  const { data } = useQuery<ApiResponse<ResponseUnit[]>>({
-    queryKey: ["units", isOpen],
+  const { data, refetch } = useQuery<ApiResponse<ResponseUnit[]>>({
+    queryKey: ["units"],
     queryFn: async () => {
       const res = await instance.get("/unit", {
         headers: {
@@ -46,7 +46,7 @@ export default function UnitPage() {
         ))}
       </section>
 
-      <CreateUnit isOpen={isOpen} onClose={onOpenChange} />
+      <CreateUnit isOpen={isOpen} onClose={onOpenChange} onConfirm={refetch} />
     </div>
   );
 }

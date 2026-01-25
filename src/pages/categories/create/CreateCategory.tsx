@@ -20,10 +20,12 @@ import { useForm } from "react-hook-form";
 interface CreateCategoryProps {
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
 }
 export default function CreateCategory({
   isOpen,
   onClose,
+  onConfirm,
 }: CreateCategoryProps) {
   const { token } = useAuth();
 
@@ -51,6 +53,7 @@ export default function CreateCategory({
         title: "Categoria creada exitosamente",
         color: "success",
       });
+      onConfirm?.();
     },
     onError: () => {
       addToast({
