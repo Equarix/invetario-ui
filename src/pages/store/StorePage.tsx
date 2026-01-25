@@ -9,10 +9,11 @@ import { instance } from "@/libs/axios";
 import { Chip, Tooltip } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LuEye, LuPen, LuPlus, LuTrash } from "react-icons/lu";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function StorePage() {
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const { data, isLoading } = useQuery<ApiResponse<ResponseStore[]>>({
     queryKey: ["stores"],
@@ -35,6 +36,7 @@ export default function StorePage() {
           button: "Crear Almacén",
         }}
         icon={<LuPlus size={16} />}
+        onClick={() => navigate("/almacenes/crear")}
       />
 
       <Table

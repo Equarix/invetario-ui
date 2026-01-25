@@ -86,3 +86,12 @@ export interface Product {
   status: boolean;
   image: ResponseGalery;
 }
+
+export interface ResponseUsers {
+  userId: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: number;
+  status: boolean;
+}

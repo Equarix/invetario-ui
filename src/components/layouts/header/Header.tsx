@@ -13,9 +13,17 @@ interface HeaderProps {
     button: string;
   };
   icon: ReactElement;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
 }
 
-export default function Header({ className, text, icon }: HeaderProps) {
+export default function Header({
+  className,
+  text,
+  icon,
+  onClick,
+  type,
+}: HeaderProps) {
   return (
     <header
       className={cn("flex items-center justify-between", className?.header)}
@@ -26,7 +34,9 @@ export default function Header({ className, text, icon }: HeaderProps) {
 
       <Button
         color="primary"
+        type={type}
         className={cn("font-semibold", className?.button)}
+        onPress={onClick}
       >
         {icon}
         {text.button}

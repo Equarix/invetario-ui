@@ -27,7 +27,7 @@ export function SidebarItem({
         "flex items-center justify-between w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group",
         pathname === href
           ? "bg-white text-black"
-          : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
+          : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white",
       )}
       to={href}
     >
@@ -35,7 +35,6 @@ export function SidebarItem({
         {isValidElement(Icon) &&
           cloneElement(Icon, {
             size: 24,
-            strokeWidth: pathname === href ? 2.5 : 2,
           })}
         {isOpen && <span className="font-medium">{label}</span>}
       </div>
@@ -46,7 +45,7 @@ export function SidebarItem({
               "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
               typeof badge === "number"
                 ? "bg-zinc-800 text-zinc-400 w-5 h-5 flex items-center justify-center"
-                : "bg-zinc-800 text-zinc-400 uppercase tracking-wider"
+                : "bg-zinc-800 text-zinc-400 uppercase tracking-wider",
             )}
           >
             {badge}

@@ -14,15 +14,15 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "w-72 h-screen sticky top-0 left-0 bg-[#121212] border-r border-zinc-800 flex flex-col p-4 text-white",
-        !isOpen && "w-20"
+        "w-72 h-screen transition-all duration-200 ease-in sticky top-0 left-0 bg-[#121212] border-r border-zinc-800 flex flex-col p-4 text-white",
+        !isOpen && "w-20",
       )}
     >
       {/* Header */}
       <div
         className={cn(
           "flex items-center justify-between mb-8 px-2",
-          !isOpen && "px-0 justify-center"
+          !isOpen && "px-0 justify-center",
         )}
       >
         <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export function Sidebar() {
           size="sm"
           className={cn(
             "text-zinc-500 min-w-unit-8 w-8 h-8 rounded-full border border-zinc-800",
-            !isOpen && "absolute right-0 translate-x-1/2 bg-zinc-900"
+            !isOpen && "absolute right-0 translate-x-1/2 bg-zinc-900",
           )}
           onPress={() => setIsOpen(!isOpen)}
         >
@@ -53,7 +53,7 @@ export function Sidebar() {
       <div
         className={cn(
           "flex items-center gap-3 mb-8 px-2 relative w-full",
-          !isOpen && "px-0 justify-center"
+          !isOpen && "px-0 justify-center",
         )}
       >
         <Avatar

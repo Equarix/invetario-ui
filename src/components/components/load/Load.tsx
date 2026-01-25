@@ -1,4 +1,5 @@
 import { Spinner } from "@heroui/react";
+import { createPortal } from "react-dom";
 
 interface LoadProps {
   loading?: boolean;
@@ -6,9 +7,10 @@ interface LoadProps {
 
 export default function Load({ loading }: LoadProps) {
   if (!loading) return null;
-  return (
-    <div className="fixed top-0 right-0 h-screen w-full bg-black/50 flex items-center justify-center">
+  return createPortal(
+    <div className="fixed top-0 right-0 h-screen w-full bg-black/50 z-1000 flex items-center justify-center">
       <Spinner size="lg" />
-    </div>
+    </div>,
+    document.body,
   );
 }
