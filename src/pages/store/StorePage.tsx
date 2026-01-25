@@ -6,16 +6,18 @@ import type {
   ResponseStore,
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
-import { Chip, Tooltip } from "@heroui/react";
+import { Chip, Tooltip, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { LuEye, LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
+import DeleteModal from "./delete/DeleteModal";
 
 export default function StorePage() {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery<ApiResponse<ResponseStore[]>>({
+  const { data, isLoading, refetch } = useQuery<ApiResponse<ResponseStore[]>>({
     queryKey: ["stores"],
     queryFn: async () => {
       const res = await instance.get("/store", {
@@ -27,6 +29,8 @@ export default function StorePage() {
       return res.data;
     },
   });
+  const { onOpen, isOpen, onOpenChange } = useDisclosure();
+  const [storeId, setStoreId] = useState<number>(-1);
 
   return (
     <div className="flex flex-col p-4 h-full w-full">
@@ -125,7 +129,13 @@ export default function StorePage() {
                   color="danger"
                   content={`Eliminar Almacén ${original.name}`}
                 >
-                  <Chip color="danger">
+                  <Chip
+                    color="danger"
+                    onClick={() => {
+                      setStoreId(original.storeId);
+                      onOpen();
+                    }}
+                  >
                     <LuTrash />
                   </Chip>
                 </Tooltip>
@@ -133,6 +143,13 @@ export default function StorePage() {
             ),
           },
         ]}
+      />
+
+      <DeleteModal
+        isOpen={isOpen}
+        onClose={onOpenChange}
+        storeId={storeId}
+        onConfirm={refetch}
       />
     </div>
   );
