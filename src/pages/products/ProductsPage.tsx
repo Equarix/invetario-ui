@@ -1,0 +1,140 @@
+import Container from "@/components/components/container/Container";
+import Table from "@/components/components/table/Table";
+import Header from "@/components/layouts/header/Header";
+import { ENV } from "@/config/env";
+import { useAuth } from "@/context/AuthContext";
+import type { ApiResponse, Product } from "@/interface/response.interface";
+import { instance } from "@/libs/axios";
+import { Chip, Image, Tooltip } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
+import { LuCar, LuPen, LuTrash } from "react-icons/lu";
+import { Link, useNavigate } from "react-router";
+
+export default function ProductsPage() {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+  const { data, isLoading } = useQuery<ApiResponse<Product[]>>({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const res = await instance.get("/product", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    },
+  });
+
+  return (
+    <Container>
+      <Header
+        icon={<LuCar />}
+        text={{
+          header: "Productos",
+          button: "Agregar Producto",
+        }}
+        onClick={() => navigate("/productos/crear")}
+      />
+
+      <Table
+        data={data?.data || []}
+        columns={[
+          {
+            header: "Imagen",
+            cell({
+              row: {
+                original: { image },
+              },
+            }) {
+              return (
+                <Image
+                  src={ENV.API_URL + image.imageUrl}
+                  alt="Product Image"
+                  width={50}
+                  height={50}
+                  className="object-cover"
+                />
+              );
+            },
+          },
+          {
+            header: "Código",
+            accessorKey: "code",
+          },
+          {
+            header: "SKU",
+            accessorKey: "codeInternal",
+          },
+          {
+            header: "Nombre",
+            accessorKey: "name",
+          },
+          {
+            header: "Descripción",
+            accessorKey: "description",
+          },
+          {
+            header: "Categoria",
+            accessorFn: (row) => row.category.name,
+          },
+          {
+            header: "Unidad",
+            accessorFn: (row) => row.unit.name,
+          },
+          {
+            header: "Precio de Compra",
+            accessorKey: "priceBuy",
+          },
+          {
+            header: "Precio de Venta",
+            accessorKey: "priceSell",
+          },
+          {
+            header: "Stock Minimo",
+            accessorKey: "minStock",
+          },
+          {
+            header: "Estado",
+            cell: ({ row: { original } }) => (
+              <Chip
+                color={original.status ? "success" : "danger"}
+                classNames={{
+                  base: "text-white",
+                }}
+              >
+                {original.status ? "Activo" : "Inactivo"}
+              </Chip>
+            ),
+          },
+          {
+            header: "Acciones",
+            cell: ({ row: { original } }) => (
+              <div className="flex items-center gap-2">
+                <Tooltip
+                  color="primary"
+                  content={`Editar Producto ${original.name}`}
+                >
+                  <Link to={`/productos/editar/${original.productId}`}>
+                    <Chip color="primary">
+                      <LuPen />
+                    </Chip>
+                  </Link>
+                </Tooltip>
+
+                <Tooltip
+                  color="danger"
+                  content={`Eliminar Producto ${original.name}`}
+                >
+                  <Chip color="danger">
+                    <LuTrash />
+                  </Chip>
+                </Tooltip>
+              </div>
+            ),
+          },
+        ]}
+        isLoading={isLoading}
+      />
+    </Container>
+  );
+}

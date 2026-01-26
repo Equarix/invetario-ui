@@ -1,4 +1,4 @@
-import { Card, CardFooter, Image, Button } from "@heroui/react";
+import { Card, CardFooter, Image, Button, useDisclosure } from "@heroui/react";
 import { useAuth } from "@/context/AuthContext";
 import type {
   ApiResponse,
@@ -8,10 +8,11 @@ import { instance } from "@/libs/axios";
 import { useQuery } from "@tanstack/react-query";
 import { LuPlus } from "react-icons/lu";
 import { ENV } from "@/config/env";
+import UploadGalery from "./upload/UploadGalery";
 
 export default function GaleryPage() {
   const { token } = useAuth();
-  const { data } = useQuery<ApiResponse<ResponseGalery[]>>({
+  const { data, refetch } = useQuery<ApiResponse<ResponseGalery[]>>({
     queryKey: ["galery"],
     queryFn: async () => {
       const res = await instance.get("/images", {
@@ -22,12 +23,15 @@ export default function GaleryPage() {
       return res.data;
     },
   });
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <div className="flex flex-col p-4 h-full w-full">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white mb-4">Galeria</h1>
 
-        <Button color="primary" className="font-semibold">
+        <Button color="primary" className="font-semibold" onPress={onOpen}>
           <LuPlus size={16} />
           Agregar Imagen
         </Button>
@@ -54,6 +58,12 @@ export default function GaleryPage() {
           </Card>
         ))}
       </section>
+
+      <UploadGalery
+        isOpen={isOpen}
+        onClose={onOpenChange}
+        onConfirm={refetch}
+      />
     </div>
   );
 }
