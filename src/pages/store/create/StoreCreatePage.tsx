@@ -156,8 +156,7 @@ export default function StoreCreatePage() {
                 const value = Array.from(keys)[0];
                 setValue("userId", Number(value));
               }}
-              isInvalid={!!errors.userId}
-              errorMessage={errors.userId?.message}
+              name="userId"
             >
               {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
             </Select>

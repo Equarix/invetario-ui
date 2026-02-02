@@ -6,6 +6,7 @@ import { Button, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LuPlus } from "react-icons/lu";
 import CreateUnit from "./create/CreateUnit";
+import Title from "@/components/components/title/Title";
 
 export default function UnitPage() {
   const { token } = useAuth();
@@ -27,7 +28,7 @@ export default function UnitPage() {
   return (
     <div className="flex flex-col p-4 h-full w-full">
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white mb-4">Unidades</h1>
+        <Title>Unidades de Inventario</Title>
 
         <Button color="primary" className="font-semibold" onPress={onOpen}>
           <LuPlus size={16} />

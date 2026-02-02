@@ -1,3 +1,4 @@
+import Title from "@/components/components/title/Title";
 import { cn } from "@/utils/cn";
 import { Button } from "@heroui/react";
 import type { ReactElement } from "react";
@@ -28,9 +29,7 @@ export default function Header({
     <header
       className={cn("flex items-center justify-between", className?.header)}
     >
-      <h1 className={cn("text-2xl font-bold text-white mb-4", className?.h1)}>
-        {text.header}
-      </h1>
+      <Title className={className?.h1}>{text.header}</Title>
 
       <Button
         color="primary"

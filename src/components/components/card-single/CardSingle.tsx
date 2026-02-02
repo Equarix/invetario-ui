@@ -23,15 +23,15 @@ export default function CardSingle({
   status,
 }: CardSingleProps) {
   return (
-    <Card className="max-w-100 bg-zinc-800">
+    <Card className="max-w-100 bg-zinc-100 dark:bg-zinc-800">
       <CardHeader className="overflow-visible pt-3 pb-0">
-        <MdInventory className="text-white" />
-        <h4 className="font-bold text-large text-white px-3">{title}</h4>
+        <MdInventory className="dark:text-white" />
+        <h4 className="font-bold text-large dark:text-white px-3">{title}</h4>
       </CardHeader>
-      <Divider className="bg-gray-800" />
+      <Divider className="dark:bg-gray-800" />
       <CardBody className="flex flex-row px-4 py-3 items-start justify-between">
         <div>
-          <small className="text-white">{subtitle}</small>
+          <small className="dark:text-white">{subtitle}</small>
         </div>
         <Chip
           color={status ? "success" : "danger"}
@@ -40,7 +40,7 @@ export default function CardSingle({
           {status ? "Activo" : "Inactivo"}
         </Chip>
       </CardBody>
-      <Divider className="bg-gray-800" />
+      <Divider className="dark:bg-gray-800" />
       <CardFooter>
         <div className="flex gap-4 items-center">
           <Button

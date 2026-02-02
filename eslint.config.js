@@ -22,6 +22,7 @@ export default defineConfig([
     rules: {
       "react-hooks/incompatible-library": "off",
       "react-hooks/exhaustive-deps": "off",
+      "react-hooks/set-state-in-effect": "off",
     },
   },
 ]);

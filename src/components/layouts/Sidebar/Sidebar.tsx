@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { HiOutlineMinusCircle } from "react-icons/hi";
 import { cn } from "@/utils/cn";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import ButtonTheme from "@/components/components/button-theme/ButtonTheme";
 
 export function Sidebar() {
   const { user, logout } = useAuth();
@@ -14,7 +15,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "w-72 h-screen transition-all duration-200 ease-in sticky top-0 left-0 bg-[#121212] border-r border-zinc-800 flex flex-col p-4 text-white",
+        "w-72 h-screen transition-all duration-200 ease-in sticky top-0 left-0 dark:bg-[#121212] border-r border-zinc-200 dark:border-zinc-800 flex flex-col p-4 text-white",
         !isOpen && "w-20",
       )}
     >
@@ -33,7 +34,11 @@ export function Sidebar() {
               </span>
             </div>
           </div>
-          {isOpen && <span className="text-lg font-bold">Inventario</span>}
+          {isOpen && (
+            <span className="text-lg font-bold dark:text-white text-black">
+              Inventario
+            </span>
+          )}
         </div>
         <Button
           isIconOnly
@@ -41,7 +46,8 @@ export function Sidebar() {
           size="sm"
           className={cn(
             "text-zinc-500 min-w-unit-8 w-8 h-8 rounded-full border border-zinc-800",
-            !isOpen && "absolute right-0 translate-x-1/2 bg-zinc-900",
+            !isOpen &&
+              "absolute right-0 translate-x-1/2 bg-white dark:bg-zinc-900",
           )}
           onPress={() => setIsOpen(!isOpen)}
         >
@@ -58,14 +64,18 @@ export function Sidebar() {
       >
         <Avatar
           src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-          className="w-10 h-10 text-large"
+          className="min-w-10 h-10 text-large"
         />
         {isOpen && (
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">
-              {user?.firstName} {user?.lastName}
-            </span>
-            <span className="text-xs text-zinc-500">{user?.email}</span>
+          <div className="w-full flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold text-black dark:text-white">
+                {user?.firstName} {user?.lastName}
+              </span>
+              <span className="text-xs text-zinc-500">{user?.email}</span>
+            </div>
+
+            <ButtonTheme />
           </div>
         )}
       </div>

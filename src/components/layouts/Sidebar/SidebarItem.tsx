@@ -26,7 +26,7 @@ export function SidebarItem({
       className={cn(
         "flex items-center justify-between w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group",
         pathname === href
-          ? "bg-white text-black"
+          ? "bg-zinc-100 dark:bg-white text-black"
           : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white",
       )}
       to={href}
