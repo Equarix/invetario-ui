@@ -16,4 +16,9 @@ export const CreateStoreSchema = z.object({
   }),
 });
 
+export const UpdateStoreSchema = CreateStoreSchema.extend({
+  status: z.boolean(),
+});
+
 export type CreateStoreInput = z.infer<typeof CreateStoreSchema>;
+export type UpdateStoreInput = z.infer<typeof UpdateStoreSchema>;

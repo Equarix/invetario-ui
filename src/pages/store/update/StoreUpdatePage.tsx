@@ -9,8 +9,8 @@ import type {
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
 import {
-  CreateStoreSchema,
-  type CreateStoreInput,
+  UpdateStoreSchema,
+  type UpdateStoreInput,
 } from "@/schemas/store/CreateStore.schema";
 import { parseErrors } from "@/utils/parseErrors";
 import {
@@ -20,12 +20,13 @@ import {
   Input,
   Select,
   SelectItem,
+  Switch,
   Textarea,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { LuPlus } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router";
 
@@ -34,14 +35,14 @@ export default function StoreUpdatePage() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const {
-    register,
     formState: { errors },
     handleSubmit,
     watch,
     setValue,
     reset,
+    control,
   } = useForm({
-    resolver: zodResolver(CreateStoreSchema),
+    resolver: zodResolver(UpdateStoreSchema),
   });
 
   const { data, isLoading: isLoadingStore } = useQuery<
@@ -72,6 +73,7 @@ export default function StoreUpdatePage() {
         observations: store.observations || "",
         maxCapacity: store.maxCapacity,
         userId: store.user.userId,
+        status: store.status,
       });
     }
   }, [data]);
@@ -92,7 +94,7 @@ export default function StoreUpdatePage() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: CreateStoreInput) => {
+    mutationFn: async (data: UpdateStoreInput) => {
       const res = await instance.put(`/store/${storeId}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -133,39 +135,71 @@ export default function StoreUpdatePage() {
         />
 
         <div className="grid grid-cols-2 gap-4 bg-default-50 p-6 rounded-lg">
-          <Input
-            label="Codigo del Almacén"
-            placeholder="Ingrese el codigo del almacén"
-            labelPlacement="outside"
-            {...register("code")}
-          />
-          <Input
-            label="Nombre del Almacén"
-            placeholder="Ingrese el nombre del almacén"
-            labelPlacement="outside"
-            {...register("name")}
-          />
-
-          <Input
-            label="Telefono del Almacén"
-            placeholder="Ingrese el telefono del almacén"
-            labelPlacement="outside"
-            {...register("phone")}
+          <Controller
+            control={control}
+            name="code"
+            render={({ field }) => (
+              <Input
+                label="Codigo del Almacén"
+                placeholder="Ingrese el codigo del almacén"
+                labelPlacement="outside"
+                {...field}
+              />
+            )}
           />
 
-          <Input
-            label="Direccion del Almacén"
-            placeholder="Ingrese la direccion del almacén"
-            labelPlacement="outside"
-            {...register("address")}
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <Input
+                label="Nombre del Almacén"
+                placeholder="Ingrese el nombre del almacén"
+                labelPlacement="outside"
+                {...field}
+              />
+            )}
           />
 
-          <Input
-            type="number"
-            label="Capacidad Máxima"
-            placeholder="Ingrese la capacidad máxima del almacén"
-            labelPlacement="outside"
-            {...register("maxCapacity", { valueAsNumber: true })}
+          <Controller
+            control={control}
+            name="phone"
+            render={({ field }) => (
+              <Input
+                label="Telefono del Almacén"
+                placeholder="Ingrese el telefono del almacén"
+                labelPlacement="outside"
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="address"
+            render={({ field }) => (
+              <Input
+                label="Direccion del Almacén"
+                placeholder="Ingrese la direccion del almacén"
+                labelPlacement="outside"
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="maxCapacity"
+            render={({ field }) => (
+              <Input
+                type="number"
+                label="Capacidad Máxima"
+                placeholder="Ingrese la capacidad máxima del almacén"
+                labelPlacement="outside"
+                {...field}
+                value={field.value?.toString() || ""}
+              />
+            )}
           />
 
           <div>
@@ -196,14 +230,32 @@ export default function StoreUpdatePage() {
             </Select>
           </div>
 
-          <Textarea
-            label="Observaciones"
-            placeholder="Ingrese las observaciones del almacén"
-            labelPlacement="outside"
-            className="col-span-2"
-            {...register("observations")}
-            errorMessage={errors.observations?.message}
+          <Controller
+            control={control}
+            name="observations"
+            render={({ field }) => (
+              <Textarea
+                label="Observaciones"
+                placeholder="Ingrese las observaciones del almacén"
+                labelPlacement="outside"
+                className="col-span-2"
+                errorMessage={errors.observations?.message}
+                {...field}
+              />
+            )}
           />
+
+          <div className="col-span-2">
+            <Controller
+              control={control}
+              name="status"
+              render={({ field }) => (
+                <Switch isSelected={field.value} onValueChange={field.onChange}>
+                  Estado del Almacén
+                </Switch>
+              )}
+            />
+          </div>
         </div>
       </Container>
     </Form>
