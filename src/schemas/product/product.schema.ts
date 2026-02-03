@@ -13,4 +13,9 @@ export const ProductSchema = z.object({
   imageId: z.number(),
 });
 
+export const UpdateProductSchema = ProductSchema.extend({
+  status: z.boolean(),
+});
+
 export type ProductInput = z.infer<typeof ProductSchema>;
+export type UpdateProductInput = z.infer<typeof UpdateProductSchema>;

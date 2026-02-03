@@ -5,15 +5,17 @@ import { ENV } from "@/config/env";
 import { useAuth } from "@/context/AuthContext";
 import type { ApiResponse, Product } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
-import { Chip, Image, Tooltip } from "@heroui/react";
+import { Chip, Image, Tooltip, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { LuCar, LuPen, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
+import DeleteModal from "./delete/DeleteModal";
 
 export default function ProductsPage() {
   const { token } = useAuth();
   const navigate = useNavigate();
-  const { data, isLoading } = useQuery<ApiResponse<Product[]>>({
+  const { data, isLoading, refetch } = useQuery<ApiResponse<Product[]>>({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await instance.get("/product", {
@@ -24,6 +26,9 @@ export default function ProductsPage() {
       return res.data;
     },
   });
+
+  const { onOpen, isOpen, onOpenChange } = useDisclosure();
+  const [productId, setProductId] = useState<number>(-1);
 
   return (
     <Container>
@@ -125,7 +130,13 @@ export default function ProductsPage() {
                   color="danger"
                   content={`Eliminar Producto ${original.name}`}
                 >
-                  <Chip color="danger">
+                  <Chip
+                    color="danger"
+                    onClick={() => {
+                      setProductId(original.productId);
+                      onOpen();
+                    }}
+                  >
                     <LuTrash />
                   </Chip>
                 </Tooltip>
@@ -134,6 +145,12 @@ export default function ProductsPage() {
           },
         ]}
         isLoading={isLoading}
+      />
+      <DeleteModal
+        isOpen={isOpen}
+        onClose={onOpenChange}
+        onConfirm={refetch}
+        productId={productId}
       />
     </Container>
   );
