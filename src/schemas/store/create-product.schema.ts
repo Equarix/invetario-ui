@@ -13,4 +13,9 @@ export const CreateProductSchema = z.object({
   lastCost: z.number().min(0, "El último costo no puede ser negativo"),
 });
 
+export const UpdateProductSchema = CreateProductSchema.extend({
+  status: z.boolean(),
+});
+
 export type CreateProductInput = z.infer<typeof CreateProductSchema>;
+export type UpdateProductInput = z.infer<typeof UpdateProductSchema>;

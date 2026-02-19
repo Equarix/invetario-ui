@@ -1,5 +1,5 @@
 import type { SidebarItemProps } from "@/components/layouts/Sidebar/SidebarItem";
-import { LuHouse } from "react-icons/lu";
+import { LuHouse, LuUsers } from "react-icons/lu";
 import { PiStackPlusBold } from "react-icons/pi";
 import { TbCategory2, TbShoppingCart } from "react-icons/tb";
 import { IoImageOutline } from "react-icons/io5";
@@ -41,6 +41,11 @@ export const SideBarConfig: SideBarConfigProps = {
       href: "/almacenes",
       icon: <RiStore2Line />,
       label: "Almacenes",
+    },
+    {
+      href: "/proveedores",
+      icon: <LuUsers />,
+      label: "Proveedores",
     },
   ],
   footer: [],

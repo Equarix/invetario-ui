@@ -16,6 +16,9 @@ import { useQuery } from "@tanstack/react-query";
 import { LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { useParams } from "react-router";
 import CreateProduct from "./create-product/CreateProduct";
+import { useState } from "react";
+import UpdateProduct from "./update-product/UpdateProduct";
+import DeleteModal from "./delete-product/DeleteModal";
 
 export default function StoreProducts() {
   const { storeId } = useParams<{
@@ -53,6 +56,23 @@ export default function StoreProducts() {
     },
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpenEdit, setIsOpenEdit] = useState({
+    isOpen: false,
+    productStoreId: null as number | null,
+  });
+  const [isOpenDelete, setIsOpenDelete] = useState({
+    isOpen: false,
+    productStoreId: null as number | null,
+  });
+
+  const handleCloseEdit = () => {
+    setIsOpenEdit({ isOpen: false, productStoreId: null });
+  };
+
+  const handleCloseDelete = () => {
+    setIsOpenDelete({ isOpen: false, productStoreId: null });
+  };
+
   return (
     <div className="flex flex-col p-4 h-full w-full">
       <Load loading={isLoadingStore} />
@@ -137,15 +157,29 @@ export default function StoreProducts() {
           },
           {
             header: "Acciones",
-            cell: () => (
+            cell: ({
+              row: {
+                original: { productStoreId },
+              },
+            }) => (
               <div className="flex items-center gap-2">
                 <Tooltip color="primary" content="Editar Producto en Almacén">
-                  <Chip color="primary">
+                  <Chip
+                    color="primary"
+                    onClick={() =>
+                      setIsOpenEdit({ isOpen: true, productStoreId })
+                    }
+                  >
                     <LuPen />
                   </Chip>
                 </Tooltip>
                 <Tooltip color="danger" content="Eliminar Producto del Almacén">
-                  <Chip color="danger">
+                  <Chip
+                    color="danger"
+                    onClick={() =>
+                      setIsOpenDelete({ isOpen: true, productStoreId })
+                    }
+                  >
                     <LuTrash />
                   </Chip>
                 </Tooltip>
@@ -156,6 +190,19 @@ export default function StoreProducts() {
       />
 
       <CreateProduct isOpen={isOpen} onClose={onClose} onConfirm={refetch} />
+      <UpdateProduct
+        isOpen={isOpenEdit.isOpen}
+        onClose={handleCloseEdit}
+        onConfirm={refetch}
+        productStoreId={isOpenEdit.productStoreId!}
+      />
+
+      <DeleteModal
+        isOpen={isOpenDelete.isOpen}
+        onClose={handleCloseDelete}
+        onConfirm={refetch}
+        productStoreId={isOpenDelete.productStoreId!}
+      />
     </div>
   );
 }
