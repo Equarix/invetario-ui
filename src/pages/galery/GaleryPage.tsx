@@ -41,8 +41,14 @@ export default function GaleryPage() {
       <section className="w-full grid grid-cols-4 gap-2 mt-4">
         {data?.data.map((u) => (
           <Card isFooterBlurred className="border-none" radius="lg">
-            <Image src={ENV.API_URL + u.imageUrl} />
-            <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%-8px)] shadow-small ml-1 z-10">
+            <Image
+              src={ENV.API_URL + u.imageUrl}
+              className="min-w-full max-h-71.25 h-full object-cover"
+              classNames={{
+                wrapper: "max-w-none!",
+              }}
+            />
+            <CardFooter className="justify-between bg-black/20 before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%-8px)] shadow-small ml-1 z-10">
               <p className="font-semibold text-1xl text-white/80">
                 {u.imageName.split("_").slice(1).join("_")}
               </p>

@@ -11,10 +11,11 @@ import type {
   ResponseStore,
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
-import { Chip, Tooltip } from "@heroui/react";
+import { Chip, Tooltip, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { useParams } from "react-router";
+import CreateProduct from "./create-product/CreateProduct";
 
 export default function StoreProducts() {
   const { storeId } = useParams<{
@@ -36,9 +37,11 @@ export default function StoreProducts() {
     },
   });
 
-  const { data: resProducts, isLoading: isLoadingProducts } = useQuery<
-    ApiResponse<ResponseProductStore[]>
-  >({
+  const {
+    data: resProducts,
+    isLoading: isLoadingProducts,
+    refetch,
+  } = useQuery<ApiResponse<ResponseProductStore[]>>({
     queryKey: ["products-store", storeId],
     queryFn: async () => {
       const res = await instance.get(`/store/${storeId}/products`, {
@@ -49,7 +52,7 @@ export default function StoreProducts() {
       return res.data;
     },
   });
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div className="flex flex-col p-4 h-full w-full">
       <Load loading={isLoadingStore} />
@@ -66,6 +69,7 @@ export default function StoreProducts() {
           button: "Crear",
         }}
         icon={<LuPlus size={16} />}
+        onClick={onOpen}
       />
 
       <Table
@@ -150,6 +154,8 @@ export default function StoreProducts() {
           },
         ]}
       />
+
+      <CreateProduct isOpen={isOpen} onClose={onClose} onConfirm={refetch} />
     </div>
   );
 }
