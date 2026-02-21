@@ -115,3 +115,16 @@ export interface ResponseProvider {
   createdAt: string;
   payConditionId: number;
 }
+
+export interface ResponseClient {
+  clientId: number;
+  clientTypeId: number;
+  clientType: string;
+  name: string;
+  typeDocument: string;
+  documentNumber: string;
+  phone: string;
+  email: string;
+  status: boolean;
+  createdAt: string;
+}
