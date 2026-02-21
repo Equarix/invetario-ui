@@ -47,6 +47,11 @@ export const SideBarConfig: SideBarConfigProps = {
       icon: <LuUsers />,
       label: "Proveedores",
     },
+    {
+      href: "/clientes",
+      icon: <LuUsers />,
+      label: "Clientes",
+    },
   ],
   footer: [],
 };

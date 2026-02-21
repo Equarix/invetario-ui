@@ -95,3 +95,23 @@ export interface ResponseUsers {
   role: number;
   status: boolean;
 }
+
+export interface ResponseProvider {
+  providerId: number;
+  code: string;
+  companyName: string;
+  publicName: string;
+  typeDocument: string;
+  documentNumber: string;
+  address: string;
+  phone: string;
+  email: string;
+  mainContact: string;
+  contactPhone: string;
+  payCondition: string;
+  typeMoney: string;
+  daysDelivery: number;
+  status: boolean;
+  createdAt: string;
+  payConditionId: number;
+}
