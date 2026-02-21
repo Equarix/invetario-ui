@@ -6,6 +6,7 @@ import StoreRoutes from "../stores/Store.routes";
 import ProductsRoute from "../products/products.route";
 import ProviderRoute from "../provider/provider.route";
 import ClientRoute from "../client/client.route";
+import OrderEntryRoute from "../order-entry/orderEntry.route";
 
 export default function DashboardRoutes() {
   return (
@@ -18,6 +19,7 @@ export default function DashboardRoutes() {
       <Route path="/productos/*" element={<ProductsRoute />} />
       <Route path="/proveedores/*" element={<ProviderRoute />} />
       <Route path="/clientes/*" element={<ClientRoute />} />
+      <Route path="/orden-entrada/*" element={<OrderEntryRoute />} />
       <Route
         path="*"
         element={<h1 className="text-white">404 - Not Found</h1>}
