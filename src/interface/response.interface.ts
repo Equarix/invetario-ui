@@ -128,3 +128,27 @@ export interface ResponseClient {
   status: boolean;
   createdAt: string;
 }
+
+export interface EntryOrderResponse {
+  entryOrderId: number;
+  provider: ResponseProvider;
+  store: ResponseStore;
+  entryDate: string;
+  createdAt: string;
+  entryOrderType: number;
+  typeMoney: string;
+  payCondition: string;
+  tax: number;
+  entryOrderStatus: string;
+  observation: string;
+  entryOrderDetails: EntryOrderDetail[];
+}
+
+export interface EntryOrderDetail {
+  entryOrderDetailId: number;
+  product: Product;
+  quantity: number;
+  unitPrice: number;
+  entryOrderDetailStatus: number;
+  createdAt: string;
+}

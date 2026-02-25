@@ -1,6 +1,12 @@
 import { cn } from "@heroui/react";
-import { cloneElement, isValidElement, type ReactElement } from "react";
-import { LuPlus } from "react-icons/lu";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  cloneElement,
+  isValidElement,
+  useState,
+  type ReactElement,
+} from "react";
+import { LuChevronDown, LuPlus } from "react-icons/lu";
 import { Link, useLocation } from "react-router";
 export interface SidebarItemProps {
   icon: ReactElement<{ size?: number; strokeWidth?: number }>;
@@ -9,6 +15,7 @@ export interface SidebarItemProps {
   hasPlus?: boolean;
   href: string;
   isOpen?: boolean;
+  children: SidebarItemProps[];
 }
 
 export function SidebarItem({
@@ -18,46 +25,87 @@ export function SidebarItem({
   hasPlus,
   href,
   isOpen,
+  children,
 }: SidebarItemProps) {
   const { pathname } = useLocation();
+  const Component = children.length > 0 ? "div" : Link;
+  const [isOpenSubItems, setIsOpen] = useState(false);
+
+  const isPathActive = () => {
+    const basePath = href.split("/")[1];
+    const currentBasePath = pathname.split("/")[1];
+    return basePath === currentBasePath;
+  };
 
   return (
-    <Link
-      className={cn(
-        "flex items-center justify-between w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group",
-        pathname === href
-          ? "bg-zinc-100 dark:bg-white text-black"
-          : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white",
-      )}
-      to={href}
-    >
-      <div className="flex items-center gap-3">
-        {isValidElement(Icon) &&
-          cloneElement(Icon, {
-            size: 24,
-          })}
-        {isOpen && <span className="font-medium">{label}</span>}
-      </div>
-      <div className="flex items-center gap-2">
-        {badge && (
-          <span
-            className={cn(
-              "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
-              typeof badge === "number"
-                ? "bg-zinc-800 text-zinc-400 w-5 h-5 flex items-center justify-center"
-                : "bg-zinc-800 text-zinc-400 uppercase tracking-wider",
-            )}
+    <div className="flex flex-col gap-1">
+      <Component
+        className={cn(
+          "flex items-center justify-between w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group",
+          isPathActive()
+            ? "bg-white text-black"
+            : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white",
+        )}
+        to={href}
+        onClick={() => {
+          if (children.length > 0) {
+            setIsOpen(!isOpenSubItems);
+          }
+        }}
+      >
+        <div className="flex items-center gap-3">
+          {isValidElement(Icon) &&
+            cloneElement(Icon, {
+              size: 24,
+            })}
+          {isOpen && <span className="font-medium">{label}</span>}
+        </div>
+        <div className="flex items-center gap-2">
+          {badge && (
+            <span
+              className={cn(
+                "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
+                typeof badge === "number"
+                  ? "bg-zinc-800 text-zinc-400 w-5 h-5 flex items-center justify-center"
+                  : "bg-zinc-800 text-zinc-400 uppercase tracking-wider",
+              )}
+            >
+              {badge}
+            </span>
+          )}
+          {hasPlus && (
+            <LuPlus
+              size={16}
+              className="text-zinc-500 group-hover:text-zinc-300 transition-colors"
+            />
+          )}
+
+          {children.length > 0 && isOpen && (
+            <LuChevronDown
+              size={16}
+              className={cn(
+                "text-zinc-500 transition-all group-hover:text-zinc-300",
+                isOpenSubItems && "rotate-180",
+              )}
+            />
+          )}
+        </div>
+      </Component>
+      <AnimatePresence>
+        {isOpenSubItems && children.length > 0 && isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex flex-col pl-4 border-l gap-1 overflow-hidden border-zinc-800 dark:text-black"
           >
-            {badge}
-          </span>
+            {children.map((child) => (
+              <SidebarItem key={child.href} {...child} isOpen={isOpen} />
+            ))}
+          </motion.div>
         )}
-        {hasPlus && (
-          <LuPlus
-            size={16}
-            className="text-zinc-500 group-hover:text-zinc-300 transition-colors"
-          />
-        )}
-      </div>
-    </Link>
+      </AnimatePresence>
+    </div>
   );
 }
