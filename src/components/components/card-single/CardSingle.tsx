@@ -15,12 +15,16 @@ interface CardSingleProps {
   title: string;
   subtitle: string;
   status: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export default function CardSingle({
   title,
   subtitle,
   status,
+  onEdit,
+  onDelete,
 }: CardSingleProps) {
   return (
     <Card className="max-w-100 bg-zinc-100 dark:bg-zinc-800">
@@ -43,16 +47,26 @@ export default function CardSingle({
       <Divider className="dark:bg-gray-800" />
       <CardFooter>
         <div className="flex gap-4 items-center">
-          <Button
-            color="success"
-            endContent={<MdEdit />}
-            className="text-white"
-          >
-            Editar
-          </Button>
-          <Button color="danger" startContent={<FaTrash />} variant="bordered">
-            Delete
-          </Button>
+          {onEdit && (
+            <Button
+              color="success"
+              endContent={<MdEdit />}
+              className="text-white"
+              onPress={onEdit}
+            >
+              Editar
+            </Button>
+          )}
+          {onDelete && (
+            <Button
+              color="danger"
+              startContent={<FaTrash />}
+              variant="bordered"
+              onPress={onDelete}
+            >
+              Delete
+            </Button>
+          )}
         </div>
       </CardFooter>
     </Card>

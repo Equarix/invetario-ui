@@ -5,4 +5,10 @@ export const UnitSchema = z.object({
   description: z.string().min(1, "La descripción es obligatoria"),
 });
 
-export type UnitSchemaType = z.infer<typeof UnitSchema>;
+export type OmitUnitSchemaType = z.infer<typeof UnitSchema>;
+
+export const updateUnitSchema = UnitSchema.extend({
+  status: z.boolean().optional(),
+});
+
+export type UpdateUnitInput = z.infer<typeof updateUnitSchema>;
