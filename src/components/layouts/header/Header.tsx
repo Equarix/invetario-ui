@@ -11,11 +11,12 @@ interface HeaderProps {
   };
   text: {
     header: string;
-    button: string;
+    button?: string;
   };
-  icon: ReactElement;
+  icon?: ReactElement;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
+  disabledButton?: boolean;
 }
 
 export default function Header({
@@ -24,6 +25,7 @@ export default function Header({
   icon,
   onClick,
   type,
+  disabledButton,
 }: HeaderProps) {
   return (
     <header
@@ -31,15 +33,17 @@ export default function Header({
     >
       <Title className={className?.h1}>{text.header}</Title>
 
-      <Button
-        color="primary"
-        type={type}
-        className={cn("font-semibold", className?.button)}
-        onPress={onClick}
-      >
-        {icon}
-        {text.button}
-      </Button>
+      {!disabledButton && (
+        <Button
+          color="primary"
+          type={type}
+          className={cn("font-semibold", className?.button)}
+          onPress={onClick}
+        >
+          {icon}
+          {text.button}
+        </Button>
+      )}
     </header>
   );
 }

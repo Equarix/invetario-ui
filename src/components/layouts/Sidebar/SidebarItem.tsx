@@ -29,13 +29,23 @@ export function SidebarItem({
 }: SidebarItemProps) {
   const { pathname } = useLocation();
   const Component = children.length > 0 ? "div" : Link;
-  const [isOpenSubItems, setIsOpen] = useState(false);
-
   const isPathActive = () => {
-    const basePath = href.split("/")[1];
-    const currentBasePath = pathname.split("/")[1];
-    return basePath === currentBasePath;
+    if (href === "/") return pathname === "/";
+    if (children.length > 0) {
+      return pathname.startsWith(href);
+    }
+    return pathname === href;
   };
+
+  const hasActiveChild = (items: SidebarItemProps[]): boolean => {
+    return items.some((child) => {
+      if (pathname === child.href) return true;
+      if (child.children.length > 0) return hasActiveChild(child.children);
+      return false;
+    });
+  };
+
+  const [isOpenSubItems, setIsOpen] = useState(() => hasActiveChild(children));
 
   return (
     <div className="flex flex-col gap-1">

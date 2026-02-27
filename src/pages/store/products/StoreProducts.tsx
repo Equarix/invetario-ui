@@ -119,14 +119,6 @@ export default function StoreProducts() {
             accessorKey: "actualStock",
           },
           {
-            header: "Stock Reservado",
-            accessorKey: "reservedStock",
-          },
-          {
-            header: "Stock Disponible",
-            accessorKey: "availableStock",
-          },
-          {
             header: "Stock Minimo",
             accessorKey: "minStock",
           },

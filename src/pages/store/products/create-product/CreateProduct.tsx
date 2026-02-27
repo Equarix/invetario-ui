@@ -156,44 +156,6 @@ export default function CreateProduct({
 
               <Controller
                 control={control}
-                name="reservedStock"
-                render={({ field }) => (
-                  <Input
-                    type="number"
-                    label="Stock Reservado"
-                    placeholder="0"
-                    labelPlacement="outside"
-                    {...field}
-                    value={field.value?.toString() || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      field.onChange(value === "" ? undefined : Number(value));
-                    }}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="availableStock"
-                render={({ field }) => (
-                  <Input
-                    type="number"
-                    label="Stock Disponible"
-                    labelPlacement="outside"
-                    placeholder="0"
-                    {...field}
-                    value={field.value?.toString() || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      field.onChange(value === "" ? undefined : Number(value));
-                    }}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
                 name="maxStock"
                 render={({ field }) => (
                   <Input

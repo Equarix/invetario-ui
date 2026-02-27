@@ -94,8 +94,6 @@ export default function UpdateProduct({
     if (productStore) {
       setValue("productId", productStore.product.productId);
       setValue("actualStock", productStore.actualStock);
-      setValue("reservedStock", productStore.reservedStock);
-      setValue("availableStock", productStore.availableStock);
       setValue("maxStock", productStore.maxStock);
       setValue("minStock", productStore.minStock);
       setValue("avgCost", productStore.avgCost);
@@ -195,44 +193,6 @@ export default function UpdateProduct({
                     label="Stock Actual"
                     placeholder="0"
                     labelPlacement="outside"
-                    {...field}
-                    value={field.value?.toString() || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      field.onChange(value === "" ? undefined : Number(value));
-                    }}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="reservedStock"
-                render={({ field }) => (
-                  <Input
-                    type="number"
-                    label="Stock Reservado"
-                    placeholder="0"
-                    labelPlacement="outside"
-                    {...field}
-                    value={field.value?.toString() || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      field.onChange(value === "" ? undefined : Number(value));
-                    }}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="availableStock"
-                render={({ field }) => (
-                  <Input
-                    type="number"
-                    label="Stock Disponible"
-                    labelPlacement="outside"
-                    placeholder="0"
                     {...field}
                     value={field.value?.toString() || ""}
                     onChange={(e) => {

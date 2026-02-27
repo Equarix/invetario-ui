@@ -3,10 +3,6 @@ import z from "zod";
 export const CreateProductSchema = z.object({
   productId: z.number(),
   actualStock: z.number().min(0, "El stock actual no puede ser negativo"),
-  reservedStock: z.number().min(0, "El stock reservado no puede ser negativo"),
-  availableStock: z
-    .number()
-    .min(0, "El stock disponible no puede ser negativo"),
   minStock: z.number().min(0, "El stock mínimo no puede ser negativo"),
   maxStock: z.number().min(0, "El stock máximo no puede ser negativo"),
   avgCost: z.number().min(0, "El precio promedio no puede ser negativo"),
