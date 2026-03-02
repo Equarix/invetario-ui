@@ -1,3 +1,4 @@
+import ModalStore from "../components/modal-store/ModalStore";
 import { Sidebar } from "./Sidebar/Sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -5,6 +6,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen w-full max-h-screen dark:bg-[#0a0a0a] overflow-x-hidden">
       <Sidebar />
       <main className="flex-1 overflow-auto">{children}</main>
+
+      <ModalStore />
     </div>
   );
 }

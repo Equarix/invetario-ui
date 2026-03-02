@@ -15,8 +15,10 @@ import type { AuthSchemaType } from "@/schemas/auth/login.schema";
 interface AuthContextProps {
   user?: UserResponse;
   token: string;
+  storeId: number;
   // register: (data: RegisterSchemaType) => void;
   // isLoadRegister: boolean;
+  handleSelectStore: (storeId: number) => void;
   logout: () => void;
   setUser: (user: UserResponse) => void;
   setToken: (token: string) => void;
@@ -32,9 +34,13 @@ export default function AuthProvider({
 }) {
   const [user, setUser, deleteUser] = useLocalStorage<UserResponse | undefined>(
     "user",
-    undefined
+    undefined,
   );
   const [token, setToken] = useState<string>(() => user?.token || "");
+  const [storeId, setStoreId, deleteStoreId] = useLocalStorage<number>(
+    "storeId",
+    -1,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,9 +75,14 @@ export default function AuthProvider({
     },
   });
 
+  const handleSelectStore = (storeId: number) => {
+    setStoreId(storeId);
+  };
+
   const logout = () => {
     deleteUser();
     setToken("");
+    deleteStoreId();
     Cookie.remove("token");
     navigate("/auth/login");
   };
@@ -88,6 +99,8 @@ export default function AuthProvider({
         setToken,
         login,
         isLoadLogin,
+        storeId,
+        handleSelectStore,
       }}
     >
       {children}

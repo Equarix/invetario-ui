@@ -152,3 +152,11 @@ export interface EntryOrderDetail {
   entryOrderDetailStatus: number;
   createdAt: string;
 }
+
+export interface ResponseUserStore {
+  storeUserId: number;
+  store: ResponseStore;
+  user: UserResponse;
+  createdAt: string;
+  status: boolean;
+}
