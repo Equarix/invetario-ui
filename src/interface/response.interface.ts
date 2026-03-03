@@ -172,3 +172,52 @@ export interface ResponseBox {
   userActual: UserResponse;
   isOpen: boolean;
 }
+
+export interface ResponsePayMethod {
+  paymethodId: number;
+  name: string;
+  status: boolean;
+  turned: boolean;
+}
+
+export interface ResponseConfig {
+  configId: number;
+  enterpriseName: string;
+  contactEmail: string;
+  ruc: string;
+  address: string;
+  phone: string;
+  logoUrl: string;
+  localCurrency: string;
+  createdAt: string;
+}
+
+export interface SaleDetailResponse {
+  saleDetailId: number;
+  product: Product;
+  productName: string;
+  quantity: number;
+  priceSell: number;
+}
+
+export interface SaleMethodResponse {
+  saleMethodId: number;
+  methodPayment: string;
+  amount: number;
+  paymethod: ResponsePayMethod;
+}
+
+export interface ResponseSale {
+  saleId: number;
+  client: ResponseClient;
+  user: UserResponse;
+  total: number;
+  observations: string;
+  saleMethods: SaleMethodResponse[];
+  saleDetails: SaleDetailResponse[];
+  createdAt: string;
+  status: boolean;
+  typeDocument: string;
+  typeMoney: string;
+  store: ResponseStore;
+}

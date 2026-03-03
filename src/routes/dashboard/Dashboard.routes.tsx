@@ -8,11 +8,12 @@ import ProviderRoute from "../provider/provider.route";
 import ClientRoute from "../client/client.route";
 import OrderEntryRoute from "../order-entry/orderEntry.route";
 import SaleRoutes from "../sale/Sale.routes";
+import HomePage from "@/pages/dashboard/HomePage";
 
 export default function DashboardRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<h1>Inicio dashboard</h1>} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/unidades" element={<UnitPage />} />
       <Route path="/categorias" element={<CategoryPage />} />
       <Route path="/galeria" element={<GaleryPage />} />

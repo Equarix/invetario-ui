@@ -44,6 +44,7 @@ export default function ModalStore() {
 
       return res.data;
     },
+    enabled: isOpen,
   });
 
   const {

@@ -15,7 +15,7 @@ interface StoreHeroProps {
 
 export default function StoreHero({ store }: StoreHeroProps) {
   return (
-    <Card className="w-full bg-linear-to-r from-background to-content2 border-none flex min-h-64 h-full">
+    <Card className="w-full bg-linear-to-r from-background to-content2 border-none flex min-h-min">
       <CardHeader className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between py-4">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-primary/10 rounded-xl text-primary">
