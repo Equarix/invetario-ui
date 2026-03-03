@@ -109,9 +109,14 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
       </div>
 
       <style>{`
+        @page {
+          margin: 0;
+          size: auto;
+        }
         @media print {
-          body * {
+          body {
             visibility: hidden;
+            margin: 0;
           }
           #sale-ticket, #sale-ticket * {
             visibility: visible;
@@ -121,9 +126,9 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
             left: 0;
             top: 0;
             margin: 0;
-            padding: 0;
-            border: none;
+            padding: 4mm;
             width: 80mm;
+            border: none;
           }
         }
       `}</style>

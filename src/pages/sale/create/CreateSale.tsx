@@ -96,7 +96,11 @@ export default function CreateSale() {
     onClose: onCloseRegisterClient,
   } = useDisclosure();
 
-  const { isOpen: isSuccessOpen, onOpen: onOpenSuccess } = useDisclosure();
+  const {
+    isOpen: isSuccessOpen,
+    onOpen: onOpenSuccess,
+    onClose: onCloseSuccess,
+  } = useDisclosure();
 
   const [selectedProd, setSelectedProd] = useState<ResponseProductStore | null>(
     null,
@@ -157,6 +161,7 @@ export default function CreateSale() {
 
   const handleNewSale = () => {
     resetSale();
+    onCloseSuccess();
   };
 
   const handleGoToList = () => {
@@ -731,7 +736,7 @@ export default function CreateSale() {
       {/* Success & PDF Modal */}
       <Modal
         isOpen={isSuccessOpen}
-        onClose={() => {}} // Force using buttons
+        onClose={onCloseSuccess} // Force using buttons
         size="3xl"
         scrollBehavior="inside"
         classNames={{
