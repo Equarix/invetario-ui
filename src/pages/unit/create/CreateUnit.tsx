@@ -1,6 +1,9 @@
 import { useAuth } from "@/context/AuthContext";
 import { instance } from "@/libs/axios";
-import { UnitSchema, type UnitSchemaType } from "@/schemas/unit/unit.schema";
+import {
+  UnitSchema,
+  type OmitUnitSchemaType,
+} from "@/schemas/unit/unit.schema";
 import {
   addToast,
   Button,
@@ -39,7 +42,7 @@ export default function CreateUnit({
   });
 
   const { isPending, mutate } = useMutation({
-    mutationFn: async (data: UnitSchemaType) => {
+    mutationFn: async (data: OmitUnitSchemaType) => {
       const res = await instance.post("/unit", data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,7 +67,7 @@ export default function CreateUnit({
     },
   });
 
-  const onSubmit = (data: UnitSchemaType) => {
+  const onSubmit = (data: OmitUnitSchemaType) => {
     mutate(data);
   };
 
