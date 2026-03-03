@@ -160,3 +160,15 @@ export interface ResponseUserStore {
   createdAt: string;
   status: boolean;
 }
+
+export interface ResponseBox {
+  boxId: number;
+  amountOpening: number;
+  amountClosing?: number;
+  dateOpening: string;
+  dateClosing?: Date;
+  userOpening: UserResponse;
+  userClosing: UserResponse;
+  userActual: UserResponse;
+  isOpen: boolean;
+}

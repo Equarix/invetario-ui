@@ -29,7 +29,10 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header
-      className={cn("flex items-center justify-between", className?.header)}
+      className={cn(
+        "flex items-center w-full justify-between",
+        className?.header,
+      )}
     >
       <Title className={className?.h1}>{text.header}</Title>
 

@@ -38,6 +38,7 @@ export default function StoreProducts() {
 
       return res.data;
     },
+    enabled: !!storeId,
   });
 
   const {
@@ -54,6 +55,7 @@ export default function StoreProducts() {
       });
       return res.data;
     },
+    enabled: !!storeId,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isOpenEdit, setIsOpenEdit] = useState({

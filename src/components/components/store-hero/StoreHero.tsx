@@ -14,10 +14,8 @@ interface StoreHeroProps {
 }
 
 export default function StoreHero({ store }: StoreHeroProps) {
-  if (!store) return null;
-
   return (
-    <Card className="w-full mb-6 bg-linear-to-r from-background to-content2 border-none">
+    <Card className="w-full bg-linear-to-r from-background to-content2 border-none flex min-h-64 h-full">
       <CardHeader className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between py-4">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-primary/10 rounded-xl text-primary">
@@ -26,20 +24,20 @@ export default function StoreHero({ store }: StoreHeroProps) {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
-                {store.name}
+                {store?.name}
               </h1>
               <Chip
-                color={store.status ? "success" : "warning"}
+                color={store?.status ? "success" : "warning"}
                 variant="flat"
                 size="sm"
                 className="ml-2"
               >
-                {store.status ? "Activo" : "Inactivo"}
+                {store?.status ? "Activo" : "Inactivo"}
               </Chip>
             </div>
             <p className="text-default-500 text-sm flex items-center gap-1 mt-1">
               <LuHash size={14} />
-              {store.code}
+              {store?.code}
             </p>
           </div>
         </div>
@@ -61,7 +59,7 @@ export default function StoreHero({ store }: StoreHeroProps) {
               <p className="text-xs text-default-500 font-medium uppercase tracking-wider">
                 Dirección
               </p>
-              <p className="text-sm font-medium">{store.address}</p>
+              <p className="text-sm font-medium">{store?.address}</p>
             </div>
           </div>
 
@@ -73,7 +71,7 @@ export default function StoreHero({ store }: StoreHeroProps) {
               <p className="text-xs text-default-500 font-medium uppercase tracking-wider">
                 Teléfono
               </p>
-              <p className="text-sm font-medium">{store.phone}</p>
+              <p className="text-sm font-medium">{store?.phone}</p>
             </div>
           </div>
 
@@ -86,7 +84,7 @@ export default function StoreHero({ store }: StoreHeroProps) {
                 Capacidad
               </p>
               <p className="text-sm font-medium">
-                {store.maxCapacity} personas
+                {store?.maxCapacity} personas
               </p>
             </div>
           </div>
@@ -99,12 +97,12 @@ export default function StoreHero({ store }: StoreHeroProps) {
               <p className="text-xs text-default-500 font-medium uppercase tracking-wider">
                 Tipo
               </p>
-              <p className="text-sm font-medium capitalize">{store.type}</p>
+              <p className="text-sm font-medium capitalize">{store?.type}</p>
             </div>
           </div>
         </div>
 
-        {store.observations && (
+        {store?.observations && (
           <div className="mt-6 p-3 bg-default-50 rounded-lg border border-default-100">
             <p className="text-xs text-default-500 font-medium uppercase mb-1">
               Observaciones

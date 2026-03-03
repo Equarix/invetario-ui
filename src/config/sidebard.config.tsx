@@ -19,6 +19,44 @@ export const SideBarConfig: SideBarConfigProps = {
       children: [],
     },
     {
+      href: "/venta",
+      icon: <TbShoppingCart />,
+      label: "Ventas",
+      children: [
+        {
+          href: "/venta",
+          icon: <TbShoppingCart />,
+          label: "Listar Ventas",
+          children: [],
+        },
+        {
+          href: "/venta/crear",
+          icon: <LuBox />,
+          label: "Crear Venta",
+          children: [],
+        },
+        {
+          href: "/venta/reportes",
+          icon: <LuCircleCheck />,
+          label: "Reportes",
+          children: [
+            {
+              href: "/venta/reportes/diario",
+              icon: <LuCircleCheck />,
+              label: "Reporte Diario",
+              children: [],
+            },
+            {
+              href: "/venta/reportes/mensual",
+              icon: <LuCircleCheck />,
+              label: "Reporte Mensual",
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
       href: "/unidades",
       icon: <PiStackPlusBold />,
       label: "Unidades",
