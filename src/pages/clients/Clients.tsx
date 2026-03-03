@@ -92,19 +92,6 @@ export default function Clients() {
             ),
           },
           {
-            header: "Estado",
-            cell: ({ row: { original } }) => (
-              <Chip
-                color={original.status ? "success" : "danger"}
-                classNames={{
-                  base: "text-white",
-                }}
-              >
-                {original.status ? "Activo" : "Inactivo"}
-              </Chip>
-            ),
-          },
-          {
             header: "Acciones",
             cell: ({ row: { original } }) => (
               <div className="flex items-center gap-2">
