@@ -3,3 +3,31 @@
 /* Note: You may need to change the path to fit your project structure */
 @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
+
+@layer base {
+  body {
+    @apply transition-colors duration-300;
+  }
+
+  /* Improved typography contrast and scale */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Premium card effect for light mode */
+  .premium-card {
+    @apply bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  /* Glassmorphism subtle effect for light mode headers */
+  .glass-header {
+    @apply sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 bg-white/80 dark:bg-zinc-950/80 border-b border-zinc-200 dark:border-zinc-800;
+  }
+}

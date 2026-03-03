@@ -15,7 +15,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "w-72 h-screen transition-all duration-200 ease-in sticky top-0 left-0 dark:bg-[#121212] border-r border-zinc-200 dark:border-zinc-800 flex flex-col p-4 text-white",
+        "w-72 h-screen transition-all duration-300 ease-in-out sticky top-0 left-0 bg-white dark:bg-[#09090b] border-r border-zinc-200 dark:border-zinc-800 flex flex-col p-4 text-zinc-900 dark:text-zinc-400 z-50",
         !isOpen && "w-20",
       )}
     >
@@ -27,15 +27,15 @@ export function Sidebar() {
         )}
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-            <div className="w-4 h-4 bg-black rounded-sm transform rotate-45 flex items-center justify-center">
-              <span className="text-[10px] text-white -rotate-45 font-bold">
+          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="w-5 h-5 bg-white rounded-md transform rotate-45 flex items-center justify-center">
+              <span className="text-[12px] text-primary -rotate-45 font-black">
                 I
               </span>
             </div>
           </div>
           {isOpen && (
-            <span className="text-lg font-bold dark:text-white text-black">
+            <span className="text-xl font-black tracking-tighter dark:text-white text-zinc-900">
               Inventario
             </span>
           )}
@@ -45,13 +45,18 @@ export function Sidebar() {
           variant="light"
           size="sm"
           className={cn(
-            "text-zinc-500 min-w-unit-8 w-8 h-8 rounded-full border border-zinc-800",
-            !isOpen &&
-              "absolute right-0 translate-x-1/2 bg-white dark:bg-zinc-900",
+            "text-zinc-400 hover:text-zinc-900 dark:hover:text-white min-w-8 w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm",
+            !isOpen && "absolute right-0 translate-x-1/2",
           )}
           onPress={() => setIsOpen(!isOpen)}
         >
-          <LuChevronsLeft size={16} className={isOpen ? "" : "rotate-180"} />
+          <LuChevronsLeft
+            size={16}
+            className={cn(
+              "transition-transform duration-300",
+              !isOpen && "rotate-180",
+            )}
+          />
         </Button>
       </div>
 
@@ -95,13 +100,15 @@ export function Sidebar() {
           <SidebarItem key={item.href} {...item} isOpen={isOpen} />
         ))}
         <button
-          className="flex items-center gap-2 w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group text-zinc-400 hover:bg-zinc-800/50"
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer group text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-danger"
           onClick={() => {
             logout();
           }}
         >
-          <HiOutlineMinusCircle size={24} />
-          {isOpen && "Cerrar sesión"}
+          <HiOutlineMinusCircle size={22} />
+          {isOpen && (
+            <span className="font-semibold text-sm">Cerrar sesión</span>
+          )}
         </button>
       </div>
     </aside>

@@ -51,10 +51,10 @@ export function SidebarItem({
     <div className="flex flex-col gap-1">
       <Component
         className={cn(
-          "flex items-center justify-between w-full px-3 py-2 rounded-xl transition-colors cursor-pointer group",
+          "flex items-center justify-between w-full px-4 py-2.5 rounded-xl transition-all duration-200 cursor-pointer group",
           isPathActive()
-            ? "bg-white text-black"
-            : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white",
+            ? "bg-primary text-white shadow-lg shadow-primary/25"
+            : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-white",
         )}
         to={href}
         onClick={() => {
@@ -76,8 +76,8 @@ export function SidebarItem({
               className={cn(
                 "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
                 typeof badge === "number"
-                  ? "bg-zinc-800 text-zinc-400 w-5 h-5 flex items-center justify-center"
-                  : "bg-zinc-800 text-zinc-400 uppercase tracking-wider",
+                  ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 w-5 h-5 flex items-center justify-center"
+                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 uppercase tracking-wider",
               )}
             >
               {badge}
@@ -108,7 +108,7 @@ export function SidebarItem({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-col pl-4 border-l gap-1 overflow-hidden border-zinc-800 dark:text-black"
+            className="flex flex-col pl-4 border-l gap-1 overflow-hidden border-zinc-200 dark:border-zinc-800"
           >
             {children.map((child) => (
               <SidebarItem key={child.href} {...child} isOpen={isOpen} />

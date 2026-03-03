@@ -146,24 +146,24 @@ export default function Sale() {
   };
 
   return (
-    <div className="p-4 flex flex-col gap-4">
+    <div className="p-6 flex flex-col gap-6 min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
       <Load loading={isLoading} />
 
-      <div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800">
+      <div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-md border border-zinc-200 dark:border-zinc-800">
         <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            Listado de Ventas
+          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+            Gestión de Ventas
           </h1>
-          <p className="text-zinc-500 text-sm mt-1">
-            Gestiona y revisa todas tus transacciones
+          <p className="text-zinc-500 text-sm font-medium mt-1">
+            Monitorea y administra el historial completo de transacciones.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <Input
             isClearable
-            className="w-full sm:max-w-[300px]"
+            className="w-full sm:max-w-[350px]"
             placeholder="Buscar por cliente o ID..."
-            startContent={<MdSearch className="text-zinc-400" />}
+            startContent={<MdSearch className="text-zinc-400 text-xl" />}
             value={filterValue}
             onClear={() => setFilterValue("")}
             onValueChange={setFilterValue}
@@ -174,7 +174,7 @@ export default function Sale() {
 
       <Table
         aria-label="Tabla de ventas"
-        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800"
+        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md border border-zinc-200 dark:border-zinc-800"
         bottomContent={
           pages > 1 ? (
             <div className="flex w-full justify-center">

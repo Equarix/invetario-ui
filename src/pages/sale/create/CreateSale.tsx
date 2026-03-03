@@ -192,10 +192,20 @@ export default function CreateSale() {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="flex flex-col gap-4 p-4 min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
       <Load loading={load} />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+      {/* Hero Header with subtle gradient */}
+      <div className="flex flex-col gap-1 mb-2">
+        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+          Nueva Venta
+        </h1>
+        <p className="text-zinc-500 text-sm font-medium">
+          Completa los detalles de la transacción para emitir el comprobante.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <MetricCard label="GRAVADA" value={subtotal.toFixed(2)} />
         <MetricCard label="IGV" value={igv.toFixed(2)} />
         <MetricCard label="DESCUENTO" value="0.00" />
@@ -302,9 +312,17 @@ export default function CreateSale() {
           </Card>
 
           {/* Table */}
-          <Card className="bg-white dark:bg-zinc-900 border-none shadow-sm min-h-75">
-            <CardHeader>
-              <h3 className="text-lg font-bold">ITEMS DE VENTA</h3>
+          <Card className="bg-white dark:bg-zinc-900 border-none shadow-md overflow-hidden min-h-75">
+            <CardHeader className="bg-zinc-50/50 dark:bg-zinc-800/50 border-b dark:border-zinc-800 py-4 px-6">
+              <div className="flex flex-col">
+                <h3 className="text-lg font-bold flex items-center gap-2 text-zinc-800 dark:text-zinc-100">
+                  <span className="w-2 h-6 bg-secondary rounded-full"></span>
+                  ITEMS DE VENTA
+                </h3>
+                <p className="text-tiny text-zinc-500 font-bold uppercase tracking-wider">
+                  Productos seleccionados
+                </p>
+              </div>
             </CardHeader>
             <Divider />
             <Table removeWrapper aria-label="Items de venta">
@@ -468,12 +486,18 @@ export default function CreateSale() {
 
         {/* Sidebar */}
         <div className="w-full lg:w-80 flex flex-col gap-4">
-          <Card className="bg-white dark:bg-zinc-900 border-none shadow-sm">
+          <Card className="bg-white dark:bg-zinc-900 border-none shadow-md overflow-hidden">
+            <CardHeader className="bg-zinc-50/50 dark:bg-zinc-800/50 border-b dark:border-zinc-800 py-4 px-6">
+              <div className="flex flex-col">
+                <h4 className="font-bold text-primary flex items-center gap-2">
+                  <MdAdd /> MÉTODOS DE PAGO
+                </h4>
+                <p className="text-tiny text-zinc-500 font-bold uppercase tracking-wider">
+                  Gestión de cobro
+                </p>
+              </div>
+            </CardHeader>
             <CardBody className="gap-3">
-              <h4 className="font-bold text-primary flex items-center gap-2">
-                <MdAdd /> Metodo Pago
-              </h4>
-
               <div className="flex gap-2">
                 <Select
                   placeholder="Metodo"
@@ -800,14 +824,16 @@ function MetricCard({
 }) {
   return (
     <Card
-      className={`border-none ${highlighted ? "bg-blue-100 dark:bg-blue-900/30" : "bg-zinc-200/50 dark:bg-zinc-800/50"}`}
+      className={`border-none shadow-sm ${highlighted ? "bg-blue-600 dark:bg-blue-600 shadow-blue-200 dark:shadow-none" : "bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700"}`}
     >
-      <CardBody className="p-3 items-center text-center">
-        <p className="text-tiny font-bold text-zinc-500 dark:text-zinc-400">
+      <CardBody className="p-4 items-center text-center">
+        <p
+          className={`text-[10px] font-extrabold uppercase tracking-widest ${highlighted ? "text-blue-100" : "text-zinc-500 dark:text-zinc-400"}`}
+        >
           {label}
         </p>
         <p
-          className={`text-2xl font-bold ${highlighted ? "text-blue-700 dark:text-blue-400" : "dark:text-white"}`}
+          className={`text-2xl font-black tabular-nums tracking-tight ${highlighted ? "text-white" : "text-zinc-900 dark:text-white"}`}
         >
           {value}
         </p>
