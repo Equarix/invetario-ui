@@ -1,5 +1,11 @@
 import type { SidebarItemProps } from "@/components/layouts/Sidebar/SidebarItem";
-import { LuBox, LuCircleCheck, LuHouse, LuUsers } from "react-icons/lu";
+import {
+  LuBox,
+  LuCircleCheck,
+  LuHouse,
+  LuSettings,
+  LuUsers,
+} from "react-icons/lu";
 import { PiStackPlusBold } from "react-icons/pi";
 import { TbCategory2, TbShoppingCart } from "react-icons/tb";
 import { IoImageOutline } from "react-icons/io5";
@@ -116,6 +122,12 @@ export const SideBarConfig: SideBarConfigProps = {
           href: "/orden-entrada/recepcion",
         },
       ],
+    },
+    {
+      href: "/configuracion",
+      icon: <LuSettings />,
+      label: "Configuración",
+      children: [],
     },
   ],
   footer: [],
