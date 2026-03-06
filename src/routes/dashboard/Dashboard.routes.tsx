@@ -27,6 +27,7 @@ export default function DashboardRoutes() {
       <Route path="/venta/*" element={<SaleRoutes />} />
       <Route path="/chat/*" element={<ChatRoute />} />
       <Route path="/configuracion" element={<Config />} />
+
       <Route
         path="*"
         element={<h1 className="text-white">404 - Not Found</h1>}
