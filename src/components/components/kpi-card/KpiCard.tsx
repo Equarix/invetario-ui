@@ -1,5 +1,5 @@
 import { Card, CardBody, Skeleton } from "@heroui/react";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { motion } from "motion/react";
 
 interface KpiCardProps {

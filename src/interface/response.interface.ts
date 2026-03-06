@@ -229,3 +229,12 @@ export interface ResponseSale {
   typeMoney: string;
   store: ResponseStore;
 }
+
+export interface ResponseChats {
+  chatId: number;
+  message: string;
+  userId: number;
+  user: UserResponse;
+  createdAt: string;
+  storeId: number;
+}
