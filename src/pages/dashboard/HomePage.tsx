@@ -59,13 +59,9 @@ const categoryData = [
 ];
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    // Simulate loading state
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+
 
   const metrics = [
     {

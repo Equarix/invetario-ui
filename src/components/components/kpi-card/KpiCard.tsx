@@ -1,4 +1,4 @@
-import { Card, CardBody, Skeleton } from "@heroui/react";
+import { Card, CardBody, Chip, Skeleton } from "@heroui/react";
 import { type ReactNode } from "react";
 import { motion } from "motion/react";
 
@@ -9,6 +9,8 @@ interface KpiCardProps {
   color?: "primary" | "success" | "warning" | "danger" | "secondary";
   description?: string;
   isLoading?: boolean;
+  trend?: string;
+  trendColor?: "success" | "danger" | "warning" | "primary" | "secondary" | "default";
 }
 
 const colorMap = {
@@ -26,23 +28,38 @@ export default function KpiCard({
   color = "primary",
   description,
   isLoading = false,
+  trend,
+  trendColor = "primary",
 }: KpiCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
+      viewport={{ once: true }}
     >
       <Card
         className={`border shadow-sm hover:shadow-md transition-all duration-300 bg-linear-to-br ${colorMap[color]}`}
         isPressable
       >
-        <CardBody className="p-5 flex flex-row items-center gap-4">
-          <div className={`p-3 rounded-xl bg-white dark:bg-zinc-900 shadow-sm`}>
-            {isLoading ? (
-              <Skeleton className="w-6 h-6 rounded-lg" />
-            ) : (
-              <div className="text-2xl">{icon}</div>
+        <CardBody className="p-5 flex flex-col gap-4">
+          <div className="flex justify-between items-start">
+            <div className={`p-3 rounded-xl bg-white dark:bg-zinc-900 shadow-sm`}>
+              {isLoading ? (
+                <Skeleton className="w-6 h-6 rounded-lg" />
+              ) : (
+                <div className="text-2xl">{icon}</div>
+              )}
+            </div>
+            {trend && !isLoading && (
+              <Chip
+                size="sm"
+                variant="flat"
+                color={trendColor}
+                className="font-bold border-none"
+              >
+                {trend}
+              </Chip>
             )}
           </div>
           <div className="flex flex-col flex-1">
@@ -55,11 +72,10 @@ export default function KpiCard({
               <h3 className="text-2xl font-black mt-0.5">{value}</h3>
             )}
             {description && !isLoading && (
-              <p className="text-zinc-500 dark:text-zinc-400 text-xs mt-1 font-medium">
+              <p className="text-zinc-500 dark:text-zinc-400 text-[10px] mt-2 font-medium">
                 {description}
               </p>
             )}
-            {isLoading && !description && <div className="h-4 mt-1" />}
           </div>
         </CardBody>
       </Card>

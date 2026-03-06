@@ -103,7 +103,7 @@ export default function ChatPage() {
         disabledButton
       />
 
-      <div className="flex flex-col gap-6 mt-4 max-h-[85dvh]">
+      <div className="flex flex-col gap-6 mt-4 h-[85dvh]">
         <div className="w-full">
           <Select
             label="Seleccionar Tienda"

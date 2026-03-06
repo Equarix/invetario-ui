@@ -162,11 +162,11 @@ export default function Config() {
   };
 
   return (
-    <div className="p-6 flex flex-col gap-6 min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
+    <div className="p-4 flex flex-col gap-2 min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
       <Load loading={isLoading} />
 
       <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-extrabold tracking-tight bg-linear-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
           Configuración del Sistema
         </h1>
         <p className="text-zinc-500 text-sm font-medium">
@@ -195,8 +195,7 @@ export default function Config() {
             </div>
           }
         >
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-            {/* Form Column */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <Card className="shadow-md border border-zinc-200 dark:border-zinc-800">
                 <CardHeader className="flex gap-3 p-6 bg-zinc-50/50 dark:bg-zinc-900 border-b dark:border-zinc-800">
@@ -310,7 +309,7 @@ export default function Config() {
                 <CardHeader className="bg-zinc-50 dark:bg-zinc-900 border-b dark:border-zinc-800 font-bold px-6 py-4">
                   Vista Previa Logo
                 </CardHeader>
-                <CardBody className="p-8 items-center justify-center min-h-[250px] bg-white dark:bg-zinc-900 ring-1 ring-zinc-100 dark:ring-zinc-800 rounded-b-xl">
+                <CardBody className="p-8 items-center justify-center min-h-62.5 bg-white dark:bg-zinc-900 ring-1 ring-zinc-100 dark:ring-zinc-800 rounded-b-xl">
                   {formData.logoUrl ? (
                     <Image
                       src={formData.logoUrl}
