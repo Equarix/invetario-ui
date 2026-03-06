@@ -15,6 +15,7 @@ import { useState } from "react";
 import { LuCar, LuPen, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
 import DeleteModal from "./delete/DeleteModal";
+import KpiCard from "@/components/components/kpi-card/KpiCard";
 
 export default function ProductsPage() {
   const { token } = useAuth();
@@ -59,6 +60,42 @@ export default function ProductsPage() {
         }}
         onClick={() => navigate("/productos/crear")}
       />
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <KpiCard
+          title="Total Productos"
+          value="482"
+          icon={<LuCar />}
+          color="primary"
+          description="Variedad total de productos"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Productos Activos"
+          value="450"
+          icon={<LuCar />}
+          color="success"
+          description="Productos disponibles para venta"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Precio Promedio"
+          value="S/ 120.00"
+          icon={<LuCar />}
+          color="secondary"
+          description="Valor promedio de venta"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Bajo Stock"
+          value="12"
+          icon={<LuCar />}
+          color="danger"
+          description="Productos próximos a agotarse"
+          isLoading={isLoading}
+        />
+      </div>
 
       <Table
         data={data?.data.items || []}

@@ -10,6 +10,7 @@ import OrderEntryRoute from "../order-entry/orderEntry.route";
 import SaleRoutes from "../sale/Sale.routes";
 import HomePage from "@/pages/dashboard/HomePage";
 import Config from "@/pages/config/Config";
+import ChatRoute from "../chat/chat.route";
 
 export default function DashboardRoutes() {
   return (
@@ -24,6 +25,7 @@ export default function DashboardRoutes() {
       <Route path="/clientes/*" element={<ClientRoute />} />
       <Route path="/orden-entrada/*" element={<OrderEntryRoute />} />
       <Route path="/venta/*" element={<SaleRoutes />} />
+      <Route path="/chat/*" element={<ChatRoute />} />
       <Route path="/configuracion" element={<Config />} />
       <Route
         path="*"

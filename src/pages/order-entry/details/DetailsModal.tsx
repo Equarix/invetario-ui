@@ -31,7 +31,7 @@ export default function DetailsModal({
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onClose} size="4xl">
-      <ModalContent>
+      <ModalContent className="overflow-y-auto max-h-[80vh]">
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
@@ -40,7 +40,9 @@ export default function DetailsModal({
             <ModalBody>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm font-semibold text-gray-500">Proveedor</p>
+                  <p className="text-sm font-semibold text-gray-500">
+                    Proveedor
+                  </p>
                   <p className="text-base">{order.provider.companyName}</p>
                 </div>
                 <div>
@@ -48,13 +50,17 @@ export default function DetailsModal({
                   <p className="text-base">{order.store.name}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-500">Fecha de Entrada</p>
+                  <p className="text-sm font-semibold text-gray-500">
+                    Fecha de Entrada
+                  </p>
                   <p className="text-base">
                     {new Date(order.entryDate).toLocaleDateString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-500">Condición de Pago</p>
+                  <p className="text-sm font-semibold text-gray-500">
+                    Condición de Pago
+                  </p>
                   <p className="text-base">{order.payCondition}</p>
                 </div>
                 <div>
@@ -80,7 +86,7 @@ export default function DetailsModal({
 
                     return (
                       <Chip
-                        color={currentStatus.color as any}
+                        color={currentStatus.color}
                         variant="flat"
                         size="sm"
                       >
@@ -94,7 +100,11 @@ export default function DetailsModal({
               <Divider className="my-4" />
 
               <p className="text-lg font-bold mb-2">Productos</p>
-              <Table aria-label="Tabla de productos de la orden" removeWrapper shadow="none">
+              <Table
+                aria-label="Tabla de productos de la orden"
+                removeWrapper
+                shadow="none"
+              >
                 <TableHeader>
                   <TableColumn>PRODUCTO</TableColumn>
                   <TableColumn>CANTIDAD</TableColumn>
@@ -118,7 +128,7 @@ export default function DetailsModal({
                           {
                             style: "currency",
                             currency: "PEN",
-                          }
+                          },
                         )}
                       </TableCell>
                     </TableRow>
@@ -131,7 +141,10 @@ export default function DetailsModal({
                   Subtotal:{" "}
                   <span className="font-semibold">
                     {order.entryOrderDetails
-                      .reduce((acc, item) => acc + item.quantity * item.unitPrice, 0)
+                      .reduce(
+                        (acc, item) => acc + item.quantity * item.unitPrice,
+                        0,
+                      )
                       .toLocaleString("es-PE", {
                         style: "currency",
                         currency: "PEN",
@@ -139,27 +152,29 @@ export default function DetailsModal({
                   </span>
                 </p>
                 <p className="text-sm">
-                    ITBIS ({order.tax}%):{" "}
-                    <span className="font-semibold">
-                      {(
-                        order.entryOrderDetails.reduce(
-                          (acc, item) => acc + item.quantity * item.unitPrice,
-                          0
-                        ) * (order.tax / 100)
-                      ).toLocaleString("es-PE", {
-                        style: "currency",
-                        currency: "PEN",
-                      })}
-                    </span>
-                  </p>
+                  ITBIS ({order.tax}%):{" "}
+                  <span className="font-semibold">
+                    {(
+                      order.entryOrderDetails.reduce(
+                        (acc, item) => acc + item.quantity * item.unitPrice,
+                        0,
+                      ) *
+                      (order.tax / 100)
+                    ).toLocaleString("es-PE", {
+                      style: "currency",
+                      currency: "PEN",
+                    })}
+                  </span>
+                </p>
                 <p className="text-xl font-bold">
                   Total:{" "}
                   <span className="text-primary">
                     {(
                       order.entryOrderDetails.reduce(
                         (acc, item) => acc + item.quantity * item.unitPrice,
-                        0
-                      ) * (1 + order.tax / 100)
+                        0,
+                      ) *
+                      (1 + order.tax / 100)
                     ).toLocaleString("es-PE", {
                       style: "currency",
                       currency: "PEN",
@@ -170,8 +185,12 @@ export default function DetailsModal({
 
               {order.observation && (
                 <div className="mt-4">
-                  <p className="text-sm font-semibold text-gray-500">Observaciones</p>
-                  <p className="text-sm italic text-gray-600">{order.observation}</p>
+                  <p className="text-sm font-semibold text-gray-500">
+                    Observaciones
+                  </p>
+                  <p className="text-sm italic text-gray-600">
+                    {order.observation}
+                  </p>
                 </div>
               )}
             </ModalBody>

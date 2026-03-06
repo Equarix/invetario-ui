@@ -25,6 +25,7 @@ import type { ResponseSale } from "@/interface/response.interface";
 import SaleTicket from "./create/components/SaleTicket";
 import Load from "@/components/components/load/Load";
 import Table from "@/components/components/table/Table";
+import KpiCard from "@/components/components/kpi-card/KpiCard";
 
 const statusColorMap: Record<string, "success" | "danger" | "warning"> = {
   true: "success",
@@ -71,6 +72,42 @@ export default function Sale() {
             variant="bordered"
           />
         </div>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard
+          title="Total Ventas"
+          value="1,250"
+          icon={<MdSearch />}
+          color="primary"
+          description="Total de ventas históricas"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Ingresos Totales"
+          value="S/ 45,200.00"
+          icon={<MdVisibility />}
+          color="success"
+          description="Recaudación total acumulada"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Ticket Promedio"
+          value="S/ 36.16"
+          icon={<MdPrint />}
+          color="secondary"
+          description="Valor promedio por venta"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Ventas Hoy"
+          value="24"
+          icon={<MdCalendarToday />}
+          color="warning"
+          description="Ventas registradas el día de hoy"
+          isLoading={isLoading}
+        />
       </div>
 
       <Table

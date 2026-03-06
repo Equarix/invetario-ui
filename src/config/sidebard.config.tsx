@@ -3,6 +3,7 @@ import {
   LuBox,
   LuCircleCheck,
   LuHouse,
+  LuMessageSquareText,
   LuSettings,
   LuUsers,
 } from "react-icons/lu";
@@ -103,6 +104,12 @@ export const SideBarConfig: SideBarConfigProps = {
       icon: <LuUsers />,
       label: "Clientes",
       children: [],
+    },
+    {
+      href: "/chat",
+      icon: <LuMessageSquareText />,
+      children: [],
+      label: "Chat",
     },
     {
       href: "/orden-entrada",

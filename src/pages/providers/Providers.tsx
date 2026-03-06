@@ -13,6 +13,7 @@ import { useState } from "react";
 import { LuPen, LuTrash, LuUsers } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
 import DeleteModal from "./delete/DeleteModal";
+import KpiCard from "@/components/components/kpi-card/KpiCard";
 
 export default function Providers() {
   const navigate = useNavigate();
@@ -44,6 +45,34 @@ export default function Providers() {
         }}
         onClick={() => navigate("/proveedores/crear")}
       />
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <KpiCard
+          title="Total Proveedores"
+          value="86"
+          icon={<LuUsers />}
+          color="primary"
+          description="Empresas proveedoras registradas"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Proveedores Activos"
+          value="82"
+          icon={<LuUsers />}
+          color="success"
+          description="Proveedores con relación activa"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Nuevos (Mes)"
+          value="4"
+          icon={<LuUsers />}
+          color="secondary"
+          description="Proveedores añadidos este mes"
+          isLoading={isLoading}
+        />
+      </div>
 
       <Table
         data={data?.data || []}

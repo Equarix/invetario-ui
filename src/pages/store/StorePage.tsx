@@ -12,6 +12,7 @@ import { useState } from "react";
 import { LuEye, LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
 import DeleteModal from "./delete/DeleteModal";
+import KpiCard from "@/components/components/kpi-card/KpiCard";
 
 export default function StorePage() {
   const { token } = useAuth();
@@ -42,6 +43,34 @@ export default function StorePage() {
         icon={<LuPlus size={16} />}
         onClick={() => navigate("/almacenes/crear")}
       />
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <KpiCard
+          title="Total Almacenes"
+          value="5"
+          icon={<LuPlus />}
+          color="primary"
+          description="Sedes operativas registradas"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Almacenes Activos"
+          value="5"
+          icon={<LuEye />}
+          color="success"
+          description="Almacenes funcionando"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Capacidad Total"
+          value="15,000 m²"
+          icon={<LuPen />}
+          color="secondary"
+          description="Espacio de almacenamiento total"
+          isLoading={isLoading}
+        />
+      </div>
 
       <Table
         data={data?.data ?? []}

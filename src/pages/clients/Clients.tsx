@@ -14,6 +14,7 @@ import { useState } from "react";
 import { LuUsers, LuPen, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
 import DeleteModal from "./delete/DeleteModal";
+import KpiCard from "@/components/components/kpi-card/KpiCard";
 
 export default function Clients() {
   const navigate = useNavigate();
@@ -58,6 +59,34 @@ export default function Clients() {
         }}
         onClick={() => navigate("/clientes/crear")}
       />
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <KpiCard
+          title="Total Clientes"
+          value="3,420"
+          icon={<LuUsers />}
+          color="primary"
+          description="Base total de clientes"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Clientes Activos"
+          value="3,200"
+          icon={<LuUsers />}
+          color="success"
+          description="Clientes con compras recientes"
+          isLoading={isLoading}
+        />
+        <KpiCard
+          title="Nuevos (Mes)"
+          value="125"
+          icon={<LuUsers />}
+          color="secondary"
+          description="Clientes registrados este mes"
+          isLoading={isLoading}
+        />
+      </div>
 
       <Table
         data={data?.data.items || []}
