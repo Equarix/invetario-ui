@@ -6,6 +6,14 @@ export interface ApiResponse<T> {
   errors: Record<string, string[]>;
 }
 
+export interface PaginateResponse<T> {
+  items: T;
+  totalItems: number;
+  totalPages: number;
+  page: number;
+  limit: number;
+}
+
 export interface AuthResponse {
   token: string;
   user: UserResponse;

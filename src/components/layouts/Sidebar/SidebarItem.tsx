@@ -55,6 +55,7 @@ export function SidebarItem({
           isPathActive()
             ? "bg-primary text-white shadow-lg shadow-primary/25"
             : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-white",
+          !isOpen && "px-0 justify-center",
         )}
         to={href}
         onClick={() => {
