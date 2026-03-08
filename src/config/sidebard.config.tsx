@@ -106,6 +106,12 @@ export const SideBarConfig: SideBarConfigProps = {
       children: [],
     },
     {
+      href: "/usuarios",
+      icon: <LuUsers />,
+      label: "Usuarios",
+      children: [],
+    },
+    {
       href: "/chat",
       icon: <LuMessageSquareText />,
       children: [],

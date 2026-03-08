@@ -1,5 +1,4 @@
 import {
-  Input,
   Button,
   Chip,
   User,
@@ -12,6 +11,8 @@ import {
   useDisclosure,
   Card,
   CardBody,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import { useState } from "react";
 import {
@@ -26,15 +27,10 @@ import SaleTicket from "./create/components/SaleTicket";
 import Load from "@/components/components/load/Load";
 import Table from "@/components/components/table/Table";
 import KpiCard from "@/components/components/kpi-card/KpiCard";
-
-const statusColorMap: Record<string, "success" | "danger" | "warning"> = {
-  true: "success",
-  false: "danger",
-};
+import { statusColorMap } from "@/utils/utils";
 
 export default function Sale() {
-  const { sales, isLoading, config, pagination } = useSales();
-  const [filterValue, setFilterValue] = useState("");
+  const { sales, isLoading, config, pagination, store } = useSales();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedSale, setSelectedSale] = useState<ResponseSale | null>(null);
 
@@ -60,17 +56,26 @@ export default function Sale() {
             Monitorea y administra el historial completo de transacciones.
           </p>
         </div>
-        <div className="flex gap-4">
-          <Input
-            isClearable
-            className="w-full sm:max-w-87.5"
-            placeholder="Buscar por cliente o ID..."
-            startContent={<MdSearch className="text-zinc-400 text-xl" />}
-            value={filterValue}
-            onClear={() => setFilterValue("")}
-            onValueChange={setFilterValue}
-            variant="bordered"
-          />
+        <div className="flex gap-4 w-full max-w-xs">
+          <Select
+            label="Almacén"
+            labelPlacement="outside"
+            placeholder="Seleccione almacén"
+            items={store.stores}
+            selectedKeys={
+              store.selectedStore
+                ? new Set([String(store.selectedStore)])
+                : new Set()
+            }
+            onSelectionChange={(keys) => {
+              const selectedKey = Array.from(keys)[0];
+              if (selectedKey) {
+                store.setSelectedStore(Number(selectedKey));
+              }
+            }}
+          >
+            {(item) => <SelectItem key={item.storeId}>{item.name}</SelectItem>}
+          </Select>
         </div>
       </div>
 

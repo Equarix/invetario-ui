@@ -4,6 +4,7 @@ import type {
   PaginateResponse,
   ResponseConfig,
   ResponseSale,
+  ResponseStore,
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -12,9 +13,12 @@ import { useState } from "react";
 export function useSales() {
   const { token } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
+  const { storeId } = useAuth();
+
+  const [selectedStore, setSelectedStore] = useState(storeId);
 
   const salesQuery = useQuery<ApiResponse<PaginateResponse<ResponseSale[]>>>({
-    queryKey: ["sales", currentPage],
+    queryKey: ["sales", currentPage, selectedStore],
     queryFn: async () => {
       const res = await instance.get("/sale", {
         headers: {
@@ -23,6 +27,7 @@ export function useSales() {
         params: {
           page: currentPage,
           limit: 10,
+          storeId: selectedStore,
         },
       });
       return res.data;
@@ -41,6 +46,21 @@ export function useSales() {
     },
   });
 
+  const { data: stores, isLoading: isLoadingStores } = useQuery<
+    ApiResponse<ResponseStore[]>
+  >({
+    queryKey: ["stores"],
+    queryFn: async () => {
+      const res = await instance.get("/store", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return res.data;
+    },
+  });
+
   return {
     sales: salesQuery.data?.data.items || [],
     isLoading: salesQuery.isLoading,
@@ -53,6 +73,12 @@ export function useSales() {
       setCurrentPage,
       totalItems: salesQuery.data ? salesQuery.data.data.totalItems : 0,
       totalPages: salesQuery.data ? salesQuery.data.data.totalPages : 1,
+    },
+    store: {
+      stores: stores?.data || [],
+      isLoading: isLoadingStores,
+      selectedStore,
+      setSelectedStore,
     },
   };
 }

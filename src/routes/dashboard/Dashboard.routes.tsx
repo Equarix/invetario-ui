@@ -11,6 +11,7 @@ import SaleRoutes from "../sale/Sale.routes";
 import HomePage from "@/pages/dashboard/HomePage";
 import Config from "@/pages/config/Config";
 import ChatRoute from "../chat/chat.route";
+import UsersRoute from "../users/users.route";
 
 export default function DashboardRoutes() {
   return (
@@ -26,6 +27,7 @@ export default function DashboardRoutes() {
       <Route path="/orden-entrada/*" element={<OrderEntryRoute />} />
       <Route path="/venta/*" element={<SaleRoutes />} />
       <Route path="/chat/*" element={<ChatRoute />} />
+      <Route path="/usuarios/*" element={<UsersRoute />} />
       <Route path="/configuracion" element={<Config />} />
 
       <Route
