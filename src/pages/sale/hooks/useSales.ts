@@ -10,6 +10,13 @@ import { instance } from "@/libs/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
+export interface KpiData {
+  totalSales: number;
+  totalRevenue: number;
+  averageTicket: number;
+  cantSaleToday: number;
+}
+
 export function useSales() {
   const { token } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +68,23 @@ export function useSales() {
     },
   });
 
+  const { data: kpiData, isLoading: isLoadingKpi } = useQuery<
+    ApiResponse<KpiData>
+  >({
+    queryKey: ["saleStats", selectedStore],
+    queryFn: async () => {
+      const res = await instance.get(`/sale/kpi/${selectedStore}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return res.data;
+    },
+  });
+
+  console.log("KPI Data:", kpiData);
+
   return {
     sales: salesQuery.data?.data.items || [],
     isLoading: salesQuery.isLoading,
@@ -79,6 +103,10 @@ export function useSales() {
       isLoading: isLoadingStores,
       selectedStore,
       setSelectedStore,
+    },
+    kpi: {
+      data: kpiData?.data,
+      isLoading: isLoadingKpi,
     },
   };
 }

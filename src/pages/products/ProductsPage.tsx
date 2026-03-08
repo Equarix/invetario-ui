@@ -2,53 +2,19 @@ import Container from "@/components/components/container/Container";
 import Table from "@/components/components/table/Table";
 import Header from "@/components/layouts/header/Header";
 import { ENV } from "@/config/env";
-import { useAuth } from "@/context/AuthContext";
-import type {
-  ApiResponse,
-  PaginateResponse,
-  Product,
-} from "@/interface/response.interface";
-import { instance } from "@/libs/axios";
 import { Chip, Image, Pagination, Tooltip, useDisclosure } from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { LuCar, LuPen, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
 import DeleteModal from "./delete/DeleteModal";
 import KpiCard from "@/components/components/kpi-card/KpiCard";
+import { useProduct } from "./hook/useProduct";
 
 export default function ProductsPage() {
-  const { token } = useAuth();
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, refetch } = useQuery<
-    ApiResponse<PaginateResponse<Product[]>>
-  >({
-    queryKey: ["products", currentPage],
-    queryFn: async () => {
-      const res = await instance.get("/product", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          page: currentPage,
-          limit: 10,
-        },
-      });
-      return res.data;
-    },
-  });
-
-  const pagination = {
-    pages: data ? data.data.totalPages : 1,
-    currentPage,
-    setCurrentPage,
-    totalItems: data ? data.data.totalItems : 0,
-    totalPages: data ? data.data.totalPages : 1,
-  };
-
   const { onOpen, isOpen, onOpenChange } = useDisclosure();
   const [productId, setProductId] = useState<number>(-1);
+  const { data, isLoading, refetch, pagination, kpi } = useProduct();
 
   return (
     <Container>
@@ -62,38 +28,30 @@ export default function ProductsPage() {
       />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <KpiCard
           title="Total Productos"
-          value="482"
+          value={kpi.data?.totalProducts.toString() || "0"}
           icon={<LuCar />}
           color="primary"
           description="Variedad total de productos"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
         <KpiCard
           title="Productos Activos"
-          value="450"
+          value={kpi.data?.totalActiveProducts.toString() || "0"}
           icon={<LuCar />}
           color="success"
           description="Productos disponibles para venta"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
         <KpiCard
           title="Precio Promedio"
-          value="S/ 120.00"
+          value={kpi.data?.averagePrice.toFixed(2) || "0.00"}
           icon={<LuCar />}
           color="secondary"
           description="Valor promedio de venta"
-          isLoading={isLoading}
-        />
-        <KpiCard
-          title="Bajo Stock"
-          value="12"
-          icon={<LuCar />}
-          color="danger"
-          description="Productos próximos a agotarse"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
       </div>
 

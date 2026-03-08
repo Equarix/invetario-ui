@@ -30,7 +30,7 @@ import KpiCard from "@/components/components/kpi-card/KpiCard";
 import { statusColorMap } from "@/utils/utils";
 
 export default function Sale() {
-  const { sales, isLoading, config, pagination, store } = useSales();
+  const { sales, isLoading, config, pagination, store, kpi } = useSales();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedSale, setSelectedSale] = useState<ResponseSale | null>(null);
 
@@ -61,7 +61,10 @@ export default function Sale() {
             label="Almacén"
             labelPlacement="outside"
             placeholder="Seleccione almacén"
-            items={store.stores}
+            items={[
+              { storeId: 0, name: "Todos los almacenes" },
+              ...store.stores,
+            ]}
             selectedKeys={
               store.selectedStore
                 ? new Set([String(store.selectedStore)])
@@ -83,35 +86,37 @@ export default function Sale() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
           title="Total Ventas"
-          value="1,250"
+          value={kpi.data ? kpi.data.totalSales.toString() : "0"}
           icon={<MdSearch />}
           color="primary"
           description="Total de ventas históricas"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
         <KpiCard
           title="Ingresos Totales"
-          value="S/ 45,200.00"
+          value={kpi.data ? kpi.data.totalRevenue.toFixed(2) : "0.00"}
           icon={<MdVisibility />}
           color="success"
           description="Recaudación total acumulada"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
         <KpiCard
           title="Ticket Promedio"
-          value="S/ 36.16"
+          value={
+            kpi.data ? `S/ ${kpi.data.averageTicket.toFixed(2)}` : "S/ 0.00"
+          }
           icon={<MdPrint />}
           color="secondary"
           description="Valor promedio por venta"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
         <KpiCard
           title="Ventas Hoy"
-          value="24"
+          value={kpi.data ? kpi.data.cantSaleToday.toString() : "0"}
           icon={<MdCalendarToday />}
           color="warning"
           description="Ventas registradas el día de hoy"
-          isLoading={isLoading}
+          isLoading={kpi.isLoading}
         />
       </div>
 
