@@ -5,6 +5,7 @@ import {
   LuHouse,
   LuMessageSquareText,
   LuSettings,
+  LuTicketPlus,
   LuUsers,
 } from "react-icons/lu";
 import { PiStackPlusBold } from "react-icons/pi";
@@ -133,6 +134,12 @@ export const SideBarConfig: SideBarConfigProps = {
           label: "Aceptar Recepción",
           children: [],
           href: "/orden-entrada/recepcion",
+        },
+        {
+          icon: <LuTicketPlus />,
+          label: "Crear Orden",
+          children: [],
+          href: "/orden-entrada/crear",
         },
       ],
     },
