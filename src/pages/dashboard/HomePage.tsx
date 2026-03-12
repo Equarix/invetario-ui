@@ -1,12 +1,4 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Chip,
-  Divider,
-  Progress,
-  Skeleton,
-} from "@heroui/react";
+import { Card, CardBody, CardHeader, Chip, Skeleton } from "@heroui/react";
 import {
   MdOutlineTrendingUp,
   MdOutlineWarningAmber,
@@ -30,43 +22,15 @@ import {
   PieChart,
   Pie,
 } from "recharts";
-import { useState, useEffect } from "react";
-
-// Mock Data
-const salesTrendData = [
-  { name: "Lun", sales: 120, revenue: 4500 },
-  { name: "Mar", sales: 150, revenue: 5200 },
-  { name: "Mie", sales: 130, revenue: 4800 },
-  { name: "Jue", sales: 170, revenue: 6100 },
-  { name: "Vie", sales: 190, revenue: 7200 },
-  { name: "Sab", sales: 220, revenue: 8500 },
-  { name: "Dom", sales: 180, revenue: 6800 },
-];
-
-const topProductsData = [
-  { name: "Laptop Dell", value: 45 },
-  { name: "Monitor LG", value: 32 },
-  { name: "Teclado RGB", value: 28 },
-  { name: "Mouse Wireless", value: 24 },
-  { name: "SSD 1TB", value: 18 },
-];
-
-const categoryData = [
-  { name: "Electrónica", value: 45, color: "#3B82F6" },
-  { name: "Accesorios", value: 25, color: "#A855F7" },
-  { name: "Periféricos", value: 20, color: "#F59E0B" },
-  { name: "Papelería", value: 10, color: "#10B981" },
-];
+import { useHome } from "./hooks/useHome";
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(false);
-
-
+  const { trend, criticalProducts, kpi, topProducts, categoryTop } = useHome();
 
   const metrics = [
     {
       title: "Valor Total Inventario",
-      value: "S/ 124,500.00",
+      value: `S/. ${kpi.total_inventory_value || "0"}`,
       description: "Valor total de productos en almacén",
       icon: <MdAttachMoney className="text-2xl text-success" />,
       trend: "+12% vs mes anterior",
@@ -74,7 +38,7 @@ export default function HomePage() {
     },
     {
       title: "Productos sin Stock",
-      value: "14",
+      value: `${kpi.out_of_stock_products || "0"}`,
       description: "Requieren reabastecimiento urgente",
       icon: <MdOutlineWarningAmber className="text-2xl text-danger" />,
       trend: "5 nuevos hoy",
@@ -82,7 +46,7 @@ export default function HomePage() {
     },
     {
       title: "Órdenes Pendientes",
-      value: "8",
+      value: `${kpi.entry_order_pending || "0"}`,
       description: "Entradas esperando aprobación",
       icon: <MdOutlineLocalShipping className="text-2xl text-warning" />,
       trend: "3 urgentes",
@@ -90,19 +54,12 @@ export default function HomePage() {
     },
     {
       title: "Ventas del Mes",
-      value: "1,142",
+      value: `${kpi.sales_this_month || "0"}`,
       description: "Transacciones completadas",
       icon: <MdOutlinePointOfSale className="text-2xl text-primary" />,
       trend: "+8% vs promedio",
       trendColor: "text-primary",
     },
-  ];
-
-  const lowStockItems = [
-    { name: "Laptop Dell XPS 15", stock: 2, min: 5, status: "Crítico" },
-    { name: 'Monitor LG 27"', stock: 4, min: 10, status: "Bajo" },
-    { name: "Teclado Mecánico RGB", stock: 1, min: 8, status: "Crítico" },
-    { name: "Mouse Inalámbrico", stock: 5, min: 15, status: "Bajo" },
   ];
 
   return (
@@ -135,8 +92,8 @@ export default function HomePage() {
                     metric.trendColor.includes("success")
                       ? "success"
                       : metric.trendColor.includes("danger")
-                      ? "danger"
-                      : "primary"
+                        ? "danger"
+                        : "primary"
                   }
                   className="font-bold border-none"
                 >
@@ -147,7 +104,7 @@ export default function HomePage() {
                 <p className="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-widest mb-1">
                   {metric.title}
                 </p>
-                {isLoading ? (
+                {kpi.isLoading ? (
                   <Skeleton className="h-9 w-32 rounded-lg" />
                 ) : (
                   <h2 className="text-3xl font-black dark:text-white tracking-tight">
@@ -189,12 +146,12 @@ export default function HomePage() {
               </Chip>
             </div>
           </CardHeader>
-          <CardBody className="p-6 h-[350px]">
-            {isLoading ? (
+          <CardBody className="p-6 h-87.5">
+            {trend.isLoading ? (
               <Skeleton className="w-full h-full rounded-2xl" />
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={salesTrendData}>
+                <AreaChart data={trend.data}>
                   <defs>
                     <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
@@ -278,14 +235,14 @@ export default function HomePage() {
             </div>
           </CardHeader>
           <CardBody className="p-0 flex flex-col items-center justify-center">
-            {isLoading ? (
+            {categoryTop.isLoading ? (
               <Skeleton className="w-48 h-48 rounded-full my-12" />
             ) : (
-              <div className="w-full h-[250px]">
+              <div className="w-full h-62.5">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={categoryData}
+                      data={categoryTop.data}
                       cx="50%"
                       cy="50%"
                       innerRadius={60}
@@ -294,7 +251,7 @@ export default function HomePage() {
                       dataKey="value"
                       stroke="none"
                     >
-                      {categoryData.map((entry, index) => (
+                      {categoryTop.data.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -310,7 +267,7 @@ export default function HomePage() {
               </div>
             )}
             <div className="w-full px-6 pb-6 mt-4 space-y-2">
-              {categoryData.map((item, i) => (
+              {categoryTop.data.map((item, i) => (
                 <div key={i} className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <div
@@ -345,12 +302,16 @@ export default function HomePage() {
               </p>
             </div>
           </CardHeader>
-          <CardBody className="p-6 h-[300px]">
-            {isLoading ? (
+          <CardBody className="p-6 h-75">
+            {topProducts.isLoading ? (
               <Skeleton className="w-full h-full rounded-2xl" />
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={topProductsData} layout="vertical" margin={{ left: 40 }}>
+                <BarChart
+                  data={topProducts.data}
+                  layout="vertical"
+                  margin={{ left: 40 }}
+                >
                   <CartesianGrid
                     strokeDasharray="3 3"
                     horizontal={true}
@@ -382,17 +343,17 @@ export default function HomePage() {
                     radius={[0, 8, 8, 0]}
                     barSize={32}
                   >
-                    {topProductsData.map((_entry, index) => (
+                    {topProducts.data.map((_entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={
                           index === 0
                             ? "#F59E0B"
                             : index === 1
-                            ? "#FBBF24"
-                            : index === 2
-                            ? "#FCD34D"
-                            : "#FDE68A"
+                              ? "#FBBF24"
+                              : index === 2
+                                ? "#FCD34D"
+                                : "#FDE68A"
                         }
                       />
                     ))}
@@ -420,7 +381,7 @@ export default function HomePage() {
           </CardHeader>
           <CardBody className="p-0">
             <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {lowStockItems.map((item, index) => (
+              {criticalProducts.data.slice(0, 5).map((item, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-between p-4 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
@@ -456,9 +417,12 @@ export default function HomePage() {
               <MdOutlinePointOfSale className="text-4xl text-white" />
             </div>
             <div>
-              <h3 className="text-2xl font-black tracking-tight">Resumen Global de Actividad</h3>
+              <h3 className="text-2xl font-black tracking-tight">
+                Resumen Global de Actividad
+              </h3>
               <p className="text-blue-100 font-medium">
-                Se han procesado 84 movimientos de inventario en las últimas 48 horas.
+                Se han procesado 84 movimientos de inventario en las últimas 48
+                horas.
               </p>
             </div>
           </div>

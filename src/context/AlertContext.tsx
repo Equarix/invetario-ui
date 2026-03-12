@@ -33,6 +33,10 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
         type,
         isVisible: true,
       });
+
+      setTimeout(() => {
+        setAlert((prev) => ({ ...prev, isVisible: false }));
+      }, 3000);
     },
     [],
   );

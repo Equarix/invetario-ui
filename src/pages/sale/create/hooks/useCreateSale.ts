@@ -138,6 +138,7 @@ export function useCreateSale() {
     ApiResponse<ResponseProductStore[]>
   >({
     queryKey: ["product-search", debouncedProductTerm, storeId],
+
     queryFn: async () => {
       const res = await instance.get(
         `/store/search?name=${debouncedProductTerm}&storeId=${storeId}`,
@@ -150,6 +151,7 @@ export function useCreateSale() {
       return res.data;
     },
     enabled: debouncedProductTerm.length > 0 && storeId !== -1,
+    staleTime: 0,
   });
 
   const { mutate: createClient, isPending: isCreatingClient } = useMutation({
@@ -237,6 +239,14 @@ export function useCreateSale() {
       (i) => i.productStoreId === productStore.productStoreId,
     );
 
+    if (
+      productStore.actualStock <
+      (existingItem ? existingItem.quantity + quantity : quantity)
+    ) {
+      showAlert("No hay stock suficiente para agregar esa cantidad", "error");
+      return;
+    }
+
     if (existingItem) {
       setItems(
         items.map((i) =>
@@ -285,7 +295,7 @@ export function useCreateSale() {
   const calculateTotals = () => {
     const subtotal = items.reduce((acc, item) => acc + item.total, 0);
     const igv = subtotal * 0.18;
-    const total = subtotal + igv;
+    const total = subtotal;
     return { subtotal, igv, total };
   };
 
