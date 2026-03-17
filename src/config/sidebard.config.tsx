@@ -2,6 +2,8 @@ import type { SidebarItemProps } from "@/components/layouts/Sidebar/SidebarItem"
 import {
   LuBox,
   LuCircleCheck,
+  LuFileBox,
+  LuFileStack,
   LuHouse,
   LuMessageSquareText,
   LuSettings,
@@ -12,6 +14,7 @@ import { PiStackPlusBold } from "react-icons/pi";
 import { TbCategory2, TbShoppingCart } from "react-icons/tb";
 import { IoImageOutline } from "react-icons/io5";
 import { RiStore2Line } from "react-icons/ri";
+import { FiFilePlus } from "react-icons/fi";
 
 interface SideBarConfigProps {
   body: SidebarItemProps[];
@@ -42,6 +45,25 @@ export const SideBarConfig: SideBarConfigProps = {
           icon: <LuBox />,
           label: "Crear Venta",
           children: [],
+        },
+        {
+          href: "/venta/proforma",
+          icon: <LuFileBox />,
+          label: "Proformas",
+          children: [
+            {
+              href: "/venta/proforma",
+              icon: <LuFileStack />,
+              label: "Listar Proformas",
+              children: [],
+            },
+            {
+              href: "/venta/proforma/crear",
+              icon: <FiFilePlus />,
+              label: "Crear Proforma",
+              children: [],
+            },
+          ],
         },
         {
           href: "/venta/reportes",

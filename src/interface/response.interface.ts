@@ -238,3 +238,20 @@ export interface ResponseChats {
   createdAt: string;
   storeId: number;
 }
+
+export interface ResponseProformaDetail {
+  proformaDetailsId: number;
+  product: Product;
+  quantity: number;
+  productName: string;
+  price: number;
+}
+
+export interface ResponseProforma {
+  proformaId: number;
+  user: UserResponse;
+  client: ResponseClient;
+  store: ResponseStore;
+  createdAt: string;
+  details: ResponseProformaDetail[];
+}

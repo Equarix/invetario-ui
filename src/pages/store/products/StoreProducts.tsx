@@ -7,11 +7,12 @@ import { ENV } from "@/config/env";
 import { useAuth } from "@/context/AuthContext";
 import type {
   ApiResponse,
+  PaginateResponse,
   ResponseProductStore,
   ResponseStore,
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
-import { Chip, Tooltip, useDisclosure } from "@heroui/react";
+import { Chip, Pagination, Tooltip, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { useParams } from "react-router";
@@ -40,23 +41,36 @@ export default function StoreProducts() {
     },
     enabled: !!storeId,
   });
-
+  const [currentPage, setCurrentPage] = useState(1);
   const {
     data: resProducts,
     isLoading: isLoadingProducts,
     refetch,
-  } = useQuery<ApiResponse<ResponseProductStore[]>>({
-    queryKey: ["products-store", storeId],
+  } = useQuery<ApiResponse<PaginateResponse<ResponseProductStore[]>>>({
+    queryKey: ["products-store", storeId, currentPage],
     queryFn: async () => {
       const res = await instance.get(`/store/${storeId}/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          page: currentPage,
+          limit: 10,
+        }
       });
       return res.data;
     },
     enabled: !!storeId,
   });
+
+  const pagination = {
+    pages: resProducts?.data.totalPages ?? 0,
+    currentPage,
+    setCurrentPage,
+    totalItems: resProducts?.data.totalItems ?? 0,
+    totalPages: resProducts?.data.totalPages ?? 0,
+  }
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isOpenEdit, setIsOpenEdit] = useState({
     isOpen: false,
@@ -95,8 +109,23 @@ export default function StoreProducts() {
       />
 
       <Table
-        data={resProducts?.data ?? []}
+        data={resProducts?.data.items ?? []}
         isLoading={isLoadingProducts}
+        bottomContent={
+          pagination.totalPages > 1 ? (
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={pagination.currentPage}
+                total={pagination.totalPages}
+                onChange={pagination.setCurrentPage}
+              />
+            </div>
+          ) : null
+        }
         columns={[
           {
             header: "Imagen",
