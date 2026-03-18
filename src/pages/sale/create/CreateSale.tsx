@@ -24,6 +24,7 @@ import {
   ModalFooter,
   useDisclosure,
   Form,
+  Tooltip,
 } from "@heroui/react";
 import {
   TypeDocumentSale,
@@ -51,6 +52,7 @@ import { parseErrors } from "@/utils/parseErrors";
 import SaleTicket from "./components/SaleTicket";
 import { useNavigate } from "react-router";
 import Load from "@/components/components/load/Load";
+import { ModalReport } from "./components/ModalReport";
 
 export default function CreateSale() {
   const {
@@ -102,6 +104,12 @@ export default function CreateSale() {
     onClose: onCloseSuccess,
   } = useDisclosure();
 
+  const {
+    isOpen: isReportOpen,
+    onOpen: onOpenReport,
+    onClose: onCloseReport,
+  } = useDisclosure();
+
   const [selectedProd, setSelectedProd] = useState<ResponseProductStore | null>(
     null,
   );
@@ -123,6 +131,12 @@ export default function CreateSale() {
       addItem(selectedProd, Number(quantity));
       setSelectedProd(null);
       setQuantity("1");
+    }
+  };
+
+  const openReportModal = () => {
+    if (selectedProd) {
+      onOpenReport();
     }
   };
 
@@ -273,7 +287,7 @@ export default function CreateSale() {
                 className="max-h-20"
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end w-full">
                 <Input
                   label="Precio"
                   placeholder="0.00"
@@ -298,15 +312,30 @@ export default function CreateSale() {
                   value={selectedProd?.actualStock.toString() ?? "0"}
                   readOnly
                 />
-                <Button
-                  color="primary"
-                  className="w-full"
-                  onPress={handleAddProduct}
-                  isDisabled={!selectedProd}
-                  startContent={<MdAdd className="text-xl" />}
-                >
-                  Agregar
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    color="primary"
+                    className="w-full col-span-2"
+                    onPress={handleAddProduct}
+                    isDisabled={!selectedProd}
+                    startContent={<MdAdd className="text-xl" />}
+                  >
+                    Agregar
+                  </Button>
+
+                  <Tooltip
+                    content="Reportar producto por stock"
+                    color="primary"
+                  >
+                    <Button
+                      variant="bordered"
+                      startContent={<MdRefresh className="text-xl" />}
+                      className="max-w-max px-0 min-w-15"
+                      isDisabled={!selectedProd}
+                      onPress={openReportModal}
+                    />
+                  </Tooltip>
+                </div>
               </div>
             </CardBody>
           </Card>
@@ -756,6 +785,12 @@ export default function CreateSale() {
           </ModalContent>
         </Form>
       </Modal>
+
+      <ModalReport
+        isOpen={isReportOpen}
+        onClose={onCloseReport}
+        producto={selectedProd?.product}
+      />
 
       {/* Success & PDF Modal */}
       <Modal

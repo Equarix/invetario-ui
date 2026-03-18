@@ -65,10 +65,12 @@ export function SidebarItem({
         }}
       >
         <div className="flex items-center gap-3">
-          {isValidElement(Icon) &&
-            cloneElement(Icon, {
-              size: 24,
-            })}
+          <div>
+            {isValidElement(Icon) &&
+              cloneElement(Icon, {
+                size: 24,
+              })}
+          </div>
           {isOpen && <span className="font-medium">{label}</span>}
         </div>
         <div className="flex items-center gap-2">
@@ -97,6 +99,7 @@ export function SidebarItem({
               className={cn(
                 "text-zinc-500 transition-all group-hover:text-zinc-300",
                 isOpenSubItems && "rotate-180",
+                isPathActive() && "text-white",
               )}
             />
           )}

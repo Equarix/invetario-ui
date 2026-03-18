@@ -2,9 +2,11 @@ import type { SidebarItemProps } from "@/components/layouts/Sidebar/SidebarItem"
 import {
   LuBox,
   LuCircleCheck,
+  LuCreditCard,
   LuFileBox,
   LuFileStack,
   LuHouse,
+  LuIndentIncrease,
   LuMessageSquareText,
   LuSettings,
   LuTicketPlus,
@@ -15,6 +17,7 @@ import { TbCategory2, TbShoppingCart } from "react-icons/tb";
 import { IoImageOutline } from "react-icons/io5";
 import { RiStore2Line } from "react-icons/ri";
 import { FiFilePlus } from "react-icons/fi";
+import { MdProductionQuantityLimits } from "react-icons/md";
 
 interface SideBarConfigProps {
   body: SidebarItemProps[];
@@ -71,9 +74,9 @@ export const SideBarConfig: SideBarConfigProps = {
           label: "Reportes",
           children: [
             {
-              href: "/venta/reportes/diario",
-              icon: <LuCircleCheck />,
-              label: "Reporte Diario",
+              href: "/venta/reportes/productos-faltantes",
+              icon: <MdProductionQuantityLimits />,
+              label: "Reporte Productos Faltantes",
               children: [],
             },
             {
@@ -87,16 +90,29 @@ export const SideBarConfig: SideBarConfigProps = {
       ],
     },
     {
-      href: "/unidades",
-      icon: <PiStackPlusBold />,
-      label: "Unidades",
-      children: [],
-    },
-    {
-      href: "/categorias",
-      icon: <TbCategory2 />,
-      label: "Categorias",
-      children: [],
+      href: "/mantenedores",
+      label: "Mantendores",
+      icon: <LuIndentIncrease />,
+      children: [
+        {
+          href: "/mantenedores/unidades",
+          icon: <PiStackPlusBold />,
+          label: "Unidades",
+          children: [],
+        },
+        {
+          href: "/mantenedores/categorias",
+          icon: <TbCategory2 />,
+          label: "Categorias",
+          children: [],
+        },
+        {
+          href: "/mantenedores/metodos-pago",
+          icon: <LuCreditCard />,
+          label: "Métodos de Pago",
+          children: [],
+        },
+      ],
     },
     {
       href: "/galeria",

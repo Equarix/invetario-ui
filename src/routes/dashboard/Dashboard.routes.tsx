@@ -1,6 +1,4 @@
-import CategoryPage from "@/pages/categories/CategoryPage";
 import GaleryPage from "@/pages/galery/GaleryPage";
-import UnitPage from "@/pages/unit/UnitPage";
 import { Route, Routes } from "react-router";
 import StoreRoutes from "../stores/Store.routes";
 import ProductsRoute from "../products/products.route";
@@ -12,13 +10,13 @@ import HomePage from "@/pages/dashboard/HomePage";
 import Config from "@/pages/config/Config";
 import ChatRoute from "../chat/chat.route";
 import UsersRoute from "../users/users.route";
+import CrudRoute from "../cruds/crud.route";
 
 export default function DashboardRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/unidades" element={<UnitPage />} />
-      <Route path="/categorias" element={<CategoryPage />} />
+      <Route path="/mantenedores/*" element={<CrudRoute />} />
       <Route path="/galeria" element={<GaleryPage />} />
       <Route path="/almacenes/*" element={<StoreRoutes />} />
       <Route path="/productos/*" element={<ProductsRoute />} />

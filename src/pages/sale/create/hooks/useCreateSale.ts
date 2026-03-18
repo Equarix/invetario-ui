@@ -99,7 +99,7 @@ export function useCreateSale() {
   const { data: payMethods } = useQuery<ApiResponse<ResponsePayMethod[]>>({
     queryKey: ["paymethods"],
     queryFn: async () => {
-      const res = await instance.get("/paymethod", {
+      const res = await instance.get("/paymethod/active", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
