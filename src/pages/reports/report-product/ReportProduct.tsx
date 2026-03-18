@@ -1,6 +1,9 @@
 import Header from "@/components/layouts/header/Header";
 import { MdOutlineReceiptLong, MdRemoveRedEye } from "react-icons/md";
-import { useReportProduct, type ResponseReportProduct } from "./hooks/useReportProduct";
+import {
+  useReportProduct,
+  type ResponseReportProduct,
+} from "./hooks/useReportProduct";
 import Load from "@/components/components/load/Load";
 import InputDate from "@/components/components/input-date/InputDate";
 import Table from "@/components/components/table/Table";
@@ -9,9 +12,11 @@ import { Button, Tooltip } from "@heroui/react";
 import UserModal from "./user/UserModal";
 
 export default function ReportProduct() {
-  const { report, dates, setDates } = useReportProduct();
+  const { report, dates, setDates, refetch } = useReportProduct();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<ResponseReportProduct["users"] | undefined>(undefined);
+  const [selectedUsers, setSelectedUsers] = useState<
+    ResponseReportProduct["users"] | undefined
+  >(undefined);
 
   const handleOpenUserModal = (users: ResponseReportProduct["users"]) => {
     setSelectedUsers(users);
@@ -42,7 +47,7 @@ export default function ReportProduct() {
             Filtra por rango de fechas
           </p>
         </article>
-        <div className="flex gap-4 w-full max-w-xs">
+        <div className="flex gap-4 w-full max-w-lg items-end">
           <InputDate
             label="Fecha Inicio"
             value={dates.startDate}
@@ -58,6 +63,15 @@ export default function ReportProduct() {
               setDates((prev) => ({ ...prev, endDate: date }))
             }
           />
+
+          <Button
+            startContent={<MdOutlineReceiptLong className="size-5" />}
+            onPress={() => refetch()}
+            className="min-w-30"
+            color="primary"
+          >
+            Filtrar
+          </Button>
         </div>
       </nav>
 

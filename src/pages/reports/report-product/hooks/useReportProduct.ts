@@ -31,8 +31,10 @@ export function useReportProduct() {
     endDate: lastDayOfMonth(new Date()),
   });
 
-  const { data, isLoading } = useQuery<ApiResponse<ResponseReportProduct[]>>({
-    queryKey: ["report-product", storeId, dates],
+  const { data, isLoading, refetch } = useQuery<
+    ApiResponse<ResponseReportProduct[]>
+  >({
+    queryKey: ["report-product", storeId],
     queryFn: async () => {
       const res = await instance.get("/product/report-products", {
         headers: {
@@ -55,5 +57,6 @@ export function useReportProduct() {
     },
     dates,
     setDates,
+    refetch,
   };
 }

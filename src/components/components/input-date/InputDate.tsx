@@ -53,7 +53,7 @@ export default function InputDate({
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
-            className="absolute top-full left-0 w-full shadow-lg rounded-md overflow-hidden z-10"
+            className="absolute top-full left-0 w-auto shadow-lg rounded-md overflow-hidden z-10"
           >
             <Calendar
               aria-label="Date (International Calendar)"
