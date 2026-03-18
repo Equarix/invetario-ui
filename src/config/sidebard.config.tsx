@@ -68,24 +68,25 @@ export const SideBarConfig: SideBarConfigProps = {
             },
           ],
         },
+      ],
+    },
+
+    {
+      href: "/reportes",
+      icon: <LuCircleCheck />,
+      label: "Reportes",
+      children: [
         {
-          href: "/venta/reportes",
+          href: "/reportes/productos-faltantes",
+          icon: <MdProductionQuantityLimits />,
+          label: "Reporte Productos Faltantes",
+          children: [],
+        },
+        {
+          href: "/reportes/mensual",
           icon: <LuCircleCheck />,
-          label: "Reportes",
-          children: [
-            {
-              href: "/venta/reportes/productos-faltantes",
-              icon: <MdProductionQuantityLimits />,
-              label: "Reporte Productos Faltantes",
-              children: [],
-            },
-            {
-              href: "/venta/reportes/mensual",
-              icon: <LuCircleCheck />,
-              label: "Reporte Mensual",
-              children: [],
-            },
-          ],
+          label: "Reporte Mensual",
+          children: [],
         },
       ],
     },

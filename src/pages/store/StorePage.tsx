@@ -9,10 +9,11 @@ import { instance } from "@/libs/axios";
 import { Chip, Tooltip, useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { LuEye, LuPen, LuPlus, LuTrash } from "react-icons/lu";
+import { LuEye, LuPen, LuPlus, LuTrash, LuUsers } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
 import DeleteModal from "./delete/DeleteModal";
 import KpiCard from "@/components/components/kpi-card/KpiCard";
+import AssingCreateModal from "./assing-create/AssingCreateModal";
 
 export default function StorePage() {
   const { token } = useAuth();
@@ -31,6 +32,11 @@ export default function StorePage() {
     },
   });
   const { onOpen, isOpen, onOpenChange } = useDisclosure();
+  const {
+    onOpen: onOpenAssign,
+    isOpen: isAssignOpen,
+    onOpenChange: onAssignOpenChange,
+  } = useDisclosure();
   const [storeId, setStoreId] = useState<number>(-1);
 
   return (
@@ -133,6 +139,22 @@ export default function StorePage() {
             cell: ({ row: { original } }) => (
               <div className="flex items-center gap-2">
                 <Tooltip
+                  color="warning"
+                  content={`Asignar Usuarios a ${original.name}`}
+                >
+                  <Chip
+                    color="warning"
+                    className="text-white"
+                    onClick={() => {
+                      setStoreId(original.storeId);
+                      onOpenAssign();
+                    }}
+                  >
+                    <LuUsers />
+                  </Chip>
+                </Tooltip>
+
+                <Tooltip
                   color="secondary"
                   content={`Ver Productos en ${original.name}`}
                 >
@@ -179,6 +201,12 @@ export default function StorePage() {
         onClose={onOpenChange}
         storeId={storeId}
         onConfirm={refetch}
+      />
+
+      <AssingCreateModal
+        isOpen={isAssignOpen}
+        onClose={onAssignOpenChange}
+        storeId={storeId}
       />
     </div>
   );

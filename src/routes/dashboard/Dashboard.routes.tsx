@@ -11,6 +11,7 @@ import Config from "@/pages/config/Config";
 import ChatRoute from "../chat/chat.route";
 import UsersRoute from "../users/users.route";
 import CrudRoute from "../cruds/crud.route";
+import ReportRoute from "../reports/report.route";
 
 export default function DashboardRoutes() {
   return (
@@ -27,6 +28,7 @@ export default function DashboardRoutes() {
       <Route path="/chat/*" element={<ChatRoute />} />
       <Route path="/usuarios/*" element={<UsersRoute />} />
       <Route path="/configuracion" element={<Config />} />
+      <Route path="/reportes/*" element={<ReportRoute />} />
 
       <Route
         path="*"
