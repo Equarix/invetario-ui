@@ -17,7 +17,7 @@ import {
   SelectItem,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { parseErrors } from "@/utils/parseErrors";
 
@@ -28,6 +28,12 @@ export default function ModalStore() {
   const canClose = Boolean(isRoleAdmin || (storeId && storeId !== -1));
 
   const [isOpen, setIsOpen] = useState(() => !canClose);
+
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    window.addEventListener("open-store-modal", handleOpen);
+    return () => window.removeEventListener("open-store-modal", handleOpen);
+  }, []);
 
   const handleClose = () => {
     if (canClose) {
