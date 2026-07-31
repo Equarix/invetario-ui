@@ -12,6 +12,7 @@ import ChatRoute from "../chat/chat.route";
 import UsersRoute from "../users/users.route";
 import CrudRoute from "../cruds/crud.route";
 import ReportRoute from "../reports/report.route";
+import BoxRoute from "../box/box.route";
 
 export default function DashboardRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function DashboardRoutes() {
       <Route path="/clientes/*" element={<ClientRoute />} />
       <Route path="/orden-entrada/*" element={<OrderEntryRoute />} />
       <Route path="/venta/*" element={<SaleRoutes />} />
+      <Route path="/caja/*" element={<BoxRoute />} />
       <Route path="/chat/*" element={<ChatRoute />} />
       <Route path="/usuarios/*" element={<UsersRoute />} />
       <Route path="/configuracion" element={<Config />} />

@@ -70,7 +70,25 @@ export const SideBarConfig: SideBarConfigProps = {
         },
       ],
     },
-
+    {
+      href: "/caja",
+      icon: <LuBox />,
+      label: "Caja",
+      children: [
+        {
+          href: "/caja/resumen",
+          icon: <LuBox />,
+          label: "Resumen",
+          children: [],
+        },
+        {
+          href: "/caja/reportes",
+          icon: <LuCircleCheck />,
+          label: "Reportes",
+          children: [],
+        },
+      ],
+    },
     {
       href: "/reportes",
       icon: <LuCircleCheck />,
