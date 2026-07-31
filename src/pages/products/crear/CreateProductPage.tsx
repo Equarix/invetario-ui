@@ -20,6 +20,7 @@ import { parseErrors } from "@/utils/parseErrors";
 import {
   addToast,
   Button,
+  Checkbox,
   Form,
   Image,
   Input,
@@ -31,7 +32,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { LuImage, LuPlus, LuTrash } from "react-icons/lu";
 import { useNavigate } from "react-router";
 
@@ -42,8 +43,16 @@ export default function CreateProductPage() {
     formState: { errors },
     control,
     setValue,
-  } = useForm({
+  } = useForm<ProductInput>({
     resolver: zodResolver(ProductSchema),
+    defaultValues: {
+      productPrices: [{ price: 0, status: true }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "productPrices",
   });
   const [selectedHeroImage, setSelectedHeroImage] =
     useState<ResponseGalery | null>(null);
@@ -297,6 +306,67 @@ export default function CreateProductPage() {
             labelPlacement="outside"
             {...register("description")}
           />
+
+          <div className="col-span-2 flex flex-col gap-3 mt-4">
+            <div className="flex justify-between items-center">
+              <span className="text-small font-medium text-foreground">
+                Precios del Producto
+              </span>
+              <Button
+                size="sm"
+                color="primary"
+                variant="flat"
+                startContent={<LuPlus size={16} />}
+                onPress={() => append({ price: 0, status: true })}
+              >
+                Agregar Precio
+              </Button>
+            </div>
+
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                className="flex items-center gap-4 bg-default-100 p-3 rounded-lg"
+              >
+                <Input
+                  type="number"
+                  label={`Precio ${index + 1}`}
+                  placeholder="0.00"
+                  labelPlacement="outside"
+                  className="flex-1"
+                  {...register(`productPrices.${index}.price`, {
+                    valueAsNumber: true,
+                  })}
+                />
+                <Controller
+                  control={control}
+                  name={`productPrices.${index}.status`}
+                  render={({ field: { value, onChange } }) => (
+                    <div className="flex items-center gap-2 pt-5">
+                      <Checkbox
+                        isSelected={!!value}
+                        onValueChange={onChange}
+                      >
+                        Activo
+                      </Checkbox>
+                    </div>
+                  )}
+                />
+                {fields.length > 1 && (
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    color="danger"
+                    variant="light"
+                    className="mt-5"
+                    onPress={() => remove(index)}
+                  >
+                    <LuTrash size={16} />
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </Container>
       <ImageGalleryModal
@@ -307,3 +377,4 @@ export default function CreateProductPage() {
     </Form>
   );
 }
+

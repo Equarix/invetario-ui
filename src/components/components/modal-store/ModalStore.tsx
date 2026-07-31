@@ -1,15 +1,11 @@
 import { useAuth } from "@/context/AuthContext";
-import type {
-  ApiResponse,
-  ResponseUserStore,
-} from "@/interface/response.interface";
-import { instance } from "@/libs/axios";
 import {
   ModalStoreSchema,
   type ModalStoreSchemaType,
 } from "@/schemas/utils/utils.schema";
 import {
   Button,
+  Checkbox,
   cn,
   Form,
   Modal,
@@ -21,56 +17,62 @@ import {
   SelectItem,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import Load from "../load/Load";
 import { parseErrors } from "@/utils/parseErrors";
 
 export default function ModalStore() {
-  const { storeId, handleSelectStore, token } = useAuth();
-  const [isOpen, setIsOpen] = useState(() => storeId === -1 || !storeId);
+  const { user, storeId, boxId, handleSelectStore, handleSelectBox } =
+    useAuth();
+  const isRoleAdmin = user?.role === 0;
+  const canClose = Boolean(isRoleAdmin || (storeId && storeId !== -1));
 
-  const { isLoading, data: resUserStore } = useQuery<
-    ApiResponse<ResponseUserStore[]>
-  >({
-    queryKey: ["user-stores"],
-    queryFn: async () => {
-      const res = await instance.get("/storeuser/by-token", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const [isOpen, setIsOpen] = useState(() => !canClose);
 
-      return res.data;
-    },
-    enabled: isOpen,
-  });
+  const handleClose = () => {
+    if (canClose) {
+      setIsOpen(false);
+    }
+  };
 
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<ModalStoreSchemaType>({
     resolver: zodResolver(ModalStoreSchema),
+    defaultValues: {
+      storeId: storeId && storeId !== -1 ? storeId : undefined,
+      boxId: boxId && boxId !== -1 ? boxId : undefined,
+    },
   });
+
+  const selectedStoreId = watch("storeId");
+  const selectedBoxId = watch("boxId");
 
   const onSubmit = (data: ModalStoreSchemaType) => {
     handleSelectStore(data.storeId);
+    handleSelectBox(data.boxId);
     setIsOpen(false);
   };
 
   return (
-    <Modal isOpen={isOpen} closeButton={<span />}>
-      <Load loading={isLoading} />
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      isDismissable={canClose}
+      hideCloseButton={!canClose}
+    >
       <Form
         validationErrors={parseErrors(errors)}
         onSubmit={handleSubmit(onSubmit)}
         className="w-full"
       >
         <ModalContent>
-          <ModalHeader>Selecciona una tienda</ModalHeader>
-          <ModalBody>
+          <ModalHeader>Seleccionar Tienda y Caja</ModalHeader>
+          <ModalBody className="gap-4">
             <Controller
               control={control}
               name="storeId"
@@ -82,9 +84,9 @@ export default function ModalStore() {
                     placeholder="Seleccione una tienda"
                     className={cn(!!errors.storeId?.message && "mt-0!")}
                     items={
-                      resUserStore?.data.map((c) => ({
-                        label: c.store.name,
-                        value: c.store.storeId.toString(),
+                      user?.stores?.map((s) => ({
+                        label: s.name,
+                        value: s.storeId.toString(),
                       })) || []
                     }
                     selectedKeys={
@@ -92,7 +94,10 @@ export default function ModalStore() {
                     }
                     onSelectionChange={(keys) => {
                       const selectedKey = Array.from(keys)[0];
-                      onChange(Number(selectedKey));
+                      if (selectedKey) {
+                        onChange(Number(selectedKey));
+                        setValue("boxId", undefined as unknown as number);
+                      }
                     }}
                     name={name}
                   >
@@ -103,6 +108,40 @@ export default function ModalStore() {
                 </div>
               )}
             />
+
+            {selectedStoreId && (
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium">Caja de la tienda</label>
+                {user?.boxes?.length === 0 ? (
+                  <p className="text-xs text-default-400">
+                    No hay cajas disponibles en esta tienda.
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    {user?.boxes?.map((box) => (
+                      <Checkbox
+                        key={box.boxId}
+                        isSelected={selectedBoxId === box.boxId}
+                        onValueChange={(isSelected) => {
+                          if (isSelected) {
+                            setValue("boxId", box.boxId);
+                          } else if (selectedBoxId === box.boxId) {
+                            setValue("boxId", undefined as unknown as number);
+                          }
+                        }}
+                      >
+                        {box.boxName} ({box.serie})
+                      </Checkbox>
+                    ))}
+                  </div>
+                )}
+                {errors.boxId && (
+                  <span className="text-xs text-danger">
+                    {errors.boxId.message}
+                  </span>
+                )}
+              </div>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-2" type="submit">

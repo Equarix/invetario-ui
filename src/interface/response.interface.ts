@@ -22,13 +22,35 @@ export interface AuthResponse {
 export interface UserResponse {
   userId: number;
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   role: number;
   status: boolean;
   token: string;
-  //   stores: any[]
+  stores: Store[];
+  boxes: Box[];
+}
+
+export interface Store {
+  storeId: number;
+  name: string;
+  code: string;
+  address: string;
+  phone: string;
+  maxCapacity: number;
+  status: boolean;
+  type: string;
+  createdAt: string;
+  observations: string;
+}
+
+export interface Box {
+  boxId: number;
+  boxName: string;
+  serie: string;
+  serieProforma: string;
+  storeId: number;
+  status: boolean;
 }
 
 export interface ResponseCategories {
@@ -93,6 +115,14 @@ export interface Product {
   minStock: number;
   status: boolean;
   image: ResponseGalery;
+  productPrices: ProductPrice[];
+}
+
+export interface ProductPrice {
+  productPriceId: number;
+  price: number;
+  status: boolean;
+  createdAt: string;
 }
 
 export interface ResponseUsers {

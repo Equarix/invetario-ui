@@ -92,7 +92,8 @@ export default function Config() {
       firstName: "VENDEDOR",
       email: "empleado@ejemplo.com",
       lastName: "DE PRUEBA",
-      password: "password",
+      boxes: [],
+      stores: [],
       role: 1,
       status: true,
       token: "",
@@ -107,6 +108,7 @@ export default function Config() {
         product: {
           productId: 1,
           name: "PRODUCTO EJEMPLO",
+          status: true,
           category: {
             categoryId: 1,
             description: "CATEGORÍA DE PRUEBA",
@@ -125,7 +127,14 @@ export default function Config() {
           minStock: 10,
           priceBuy: 50,
           priceSell: 75.25,
-          status: true,
+          productPrices: [
+            {
+              productPriceId: 1,
+              price: 75.25,
+              status: true,
+              createdAt: new Date().toISOString(),
+            },
+          ],
           unit: {
             description: "UNIDAD",
             name: "UNIDAD",
@@ -152,11 +161,12 @@ export default function Config() {
         firstName: "VENDEDOR",
         email: "empleado@ejemplo.com",
         lastName: "DE PRUEBA",
-        password: "password",
         role: 1,
         status: true,
         token: "",
         userId: 1,
+        boxes: [],
+        stores: [],
       },
     },
   };

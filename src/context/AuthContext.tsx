@@ -16,9 +16,11 @@ interface AuthContextProps {
   user?: UserResponse;
   token: string;
   storeId: number;
+  boxId: number;
   // register: (data: RegisterSchemaType) => void;
   // isLoadRegister: boolean;
   handleSelectStore: (storeId: number) => void;
+  handleSelectBox: (boxId: number) => void;
   logout: () => void;
   setUser: (user: UserResponse) => void;
   setToken: (token: string) => void;
@@ -41,6 +43,9 @@ export default function AuthProvider({
     "storeId",
     -1,
   );
+
+  const [boxId, setBoxId, deleteBoxId] = useLocalStorage<number>("boxId", -1);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,6 +80,10 @@ export default function AuthProvider({
     },
   });
 
+  const handleSelectBox = (boxId: number) => {
+    setBoxId(boxId);
+  };
+
   const handleSelectStore = (storeId: number) => {
     setStoreId(storeId);
   };
@@ -83,6 +92,7 @@ export default function AuthProvider({
     deleteUser();
     setToken("");
     deleteStoreId();
+    deleteBoxId();
     Cookie.remove("token");
     navigate("/auth/login");
   };
@@ -98,6 +108,8 @@ export default function AuthProvider({
         setUser,
         setToken,
         login,
+        boxId,
+        handleSelectBox,
         isLoadLogin,
         storeId,
         handleSelectStore,

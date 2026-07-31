@@ -21,6 +21,7 @@ import { parseErrors } from "@/utils/parseErrors";
 import {
   addToast,
   Button,
+  Checkbox,
   Form,
   Image,
   Input,
@@ -33,7 +34,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { LuImage, LuPlus, LuTrash } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router";
 
@@ -44,8 +45,13 @@ export default function EditProductPage() {
     control,
     setValue,
     reset,
-  } = useForm({
+  } = useForm<UpdateProductInput>({
     resolver: zodResolver(UpdateProductSchema),
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "productPrices",
   });
 
   const { productId } = useParams<{ productId: string }>();
@@ -149,6 +155,10 @@ export default function EditProductPage() {
         minStock: product.minStock,
         imageId: product.image.imageId,
         status: product.status,
+        productPrices: product.productPrices?.map((pp) => ({
+          price: pp.price,
+          status: pp.status,
+        })) || [{ price: 0, status: true }],
       });
       setSelectedHeroImage(product.image);
     }
@@ -286,6 +296,7 @@ export default function EditProductPage() {
                 placeholder="0.00"
                 labelPlacement="outside"
                 {...field}
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 value={field.value?.toString() || ""}
               />
             )}
@@ -301,6 +312,7 @@ export default function EditProductPage() {
                 placeholder="0.00"
                 labelPlacement="outside"
                 {...field}
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 value={field.value?.toString() || ""}
               />
             )}
@@ -316,6 +328,7 @@ export default function EditProductPage() {
                 placeholder="0"
                 labelPlacement="outside"
                 {...field}
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 value={field.value?.toString() || ""}
               />
             )}
@@ -386,6 +399,73 @@ export default function EditProductPage() {
             )}
           />
 
+          <div className="col-span-2 flex flex-col gap-3 mt-4">
+            <div className="flex justify-between items-center">
+              <span className="text-small font-medium text-foreground">
+                Precios del Producto
+              </span>
+              <Button
+                size="sm"
+                color="primary"
+                variant="flat"
+                startContent={<LuPlus size={16} />}
+                onPress={() => append({ price: 0, status: true })}
+              >
+                Agregar Precio
+              </Button>
+            </div>
+
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                className="flex items-center gap-4 bg-default-100 p-3 rounded-lg"
+              >
+                <Controller
+                  control={control}
+                  name={`productPrices.${index}.price`}
+                  render={({ field }) => (
+                    <Input
+                      type="number"
+                      label={`Precio ${index + 1}`}
+                      placeholder="0.00"
+                      labelPlacement="outside"
+                      className="flex-1"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={field.value?.toString() || ""}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`productPrices.${index}.status`}
+                  render={({ field: { value, onChange } }) => (
+                    <div className="flex items-center gap-2 pt-5">
+                      <Checkbox
+                        isSelected={!!value}
+                        onValueChange={onChange}
+                      >
+                        Activo
+                      </Checkbox>
+                    </div>
+                  )}
+                />
+                {fields.length > 1 && (
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    color="danger"
+                    variant="light"
+                    className="mt-5"
+                    onPress={() => remove(index)}
+                  >
+                    <LuTrash size={16} />
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+
           <div className="col-span-2">
             <Controller
               control={control}
@@ -407,3 +487,4 @@ export default function EditProductPage() {
     </Form>
   );
 }
+
