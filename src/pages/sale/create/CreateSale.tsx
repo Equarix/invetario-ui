@@ -39,6 +39,7 @@ import {
   MdShoppingCart,
   MdPersonAdd,
 } from "react-icons/md";
+import { LuBox, LuLock } from "react-icons/lu";
 import { useState, useMemo, useEffect } from "react";
 import type { ResponseProductStore } from "@/interface/response.interface";
 import { useForm, Controller } from "react-hook-form";
@@ -57,6 +58,9 @@ import { ModalReport } from "./components/ModalReport";
 export default function CreateSale() {
   const {
     load,
+    isCreateSales,
+    boxCheckMessage,
+    isCheckingBox,
     subtotal,
     igv,
     total,
@@ -840,6 +844,68 @@ export default function CreateSale() {
                   Ver listado
                 </Button>
               </div>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal / Popup de Alerta de Bloqueo de Caja */}
+      <Modal
+        isOpen={!isCheckingBox && !isCreateSales}
+        isDismissable={false}
+        hideCloseButton
+        size="lg"
+        backdrop="blur"
+        classNames={{
+          base: "border border-danger-200 dark:border-danger-900/50 bg-white dark:bg-zinc-950 shadow-2xl",
+        }}
+      >
+        <ModalContent>
+          <ModalBody className="p-6 md:p-8 text-center flex flex-col items-center">
+            {/* Animated Icon Container */}
+            <div className="w-20 h-20 rounded-full bg-danger-100 dark:bg-danger-950/80 text-danger flex items-center justify-center mb-4 ring-8 ring-danger-50 dark:ring-danger-900/20 animate-pulse">
+              <LuLock size={40} />
+            </div>
+
+            <Chip
+              color="danger"
+              variant="flat"
+              className="font-bold uppercase tracking-wider text-xs mb-3 px-4 py-1"
+            >
+              Ventas Bloqueadas
+            </Chip>
+
+            <h2 className="text-xl md:text-2xl font-black text-zinc-900 dark:text-white mb-2">
+              Atención: Cierre de Caja Requerido
+            </h2>
+
+            {/* Message from API */}
+            <div className="w-full p-4 my-4 rounded-xl bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 text-danger-700 dark:text-danger-300 font-semibold text-base md:text-lg">
+              {boxCheckMessage || "No es posible registrar ventas en este momento."}
+            </div>
+
+            <p className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 max-w-md mb-6 leading-relaxed">
+              Para continuar realizando ventas en el sistema, debe dirigirse al módulo de <strong>Resumen de Caja</strong> y gestionar el cierre o apertura correspondiente.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+              <Button
+                color="primary"
+                size="lg"
+                className="font-bold shadow-lg shadow-primary/30 flex-1"
+                startContent={<LuBox size={20} />}
+                onPress={() => navigate("/caja/resumen")}
+              >
+                Ir a Resumen de Caja
+              </Button>
+              <Button
+                variant="flat"
+                size="lg"
+                className="font-semibold flex-1"
+                onPress={() => navigate("/venta")}
+              >
+                Volver a Ventas
+              </Button>
             </div>
           </ModalBody>
         </ModalContent>

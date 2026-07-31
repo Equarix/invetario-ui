@@ -43,8 +43,13 @@ export enum TypeDocumentSale {
   FACTURA = 1,
 }
 
+export interface DayBoxIsCreateSalesResponse {
+  isCreateSales: boolean;
+  message: string;
+}
+
 export function useCreateSale() {
-  const { token, storeId } = useAuth();
+  const { token, storeId, boxId } = useAuth();
   const { showAlert } = useAlert();
   const navigate = useNavigate();
 
@@ -70,19 +75,42 @@ export function useCreateSale() {
   // Success state
   const [createdSale, setCreatedSale] = useState<ResponseSale | null>(null);
 
-  const { data, isError, isLoading } = useQuery<ApiResponse<ResponseBox>>({
-    queryKey: ["boxes"],
-    queryFn: async () => {
-      const res = await instance.get("/box/open", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const { data: boxCheckData, isLoading: isCheckingBox } =
+    useQuery<DayBoxIsCreateSalesResponse>({
+      queryKey: ["daybox-is-create-sales", boxId],
+      queryFn: async () => {
+        if (!boxId || boxId === -1) {
+          return {
+            isCreateSales: false,
+            message: "No ha seleccionado una caja válida en el sistema.",
+          };
+        }
+        const res = await instance.get(`/daybox/is-create-sales/${boxId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      return res.data;
-    },
-    retry: false,
-  });
+        if (res.data && typeof res.data === "object") {
+          if ("isCreateSales" in res.data) {
+            return res.data as DayBoxIsCreateSalesResponse;
+          }
+          if ("data" in res.data && res.data.data) {
+            return res.data.data as DayBoxIsCreateSalesResponse;
+          }
+        }
+        return res.data;
+      },
+      enabled: Boolean(boxId && boxId !== -1),
+      retry: false,
+    });
+
+  const isCreateSales = boxCheckData?.isCreateSales ?? false;
+  const boxCheckMessage =
+    boxCheckData?.message ||
+    (!boxId || boxId === -1
+      ? "No ha seleccionado una caja en la aplicación. Por favor seleccione una caja antes de vender."
+      : "");
 
   const { data: config } = useQuery<ApiResponse<ResponseConfig>>({
     queryKey: ["config"],
@@ -107,13 +135,6 @@ export function useCreateSale() {
       return res.data;
     },
   });
-
-  useEffect(() => {
-    if (isError) {
-      showAlert("No hay cajas abiertas", "error");
-      navigate("/venta");
-    }
-  }, [isError, data]);
 
   // Search Queries
   const { data: clients, isFetching: isSearchingClient } = useQuery<
@@ -208,6 +229,7 @@ export function useCreateSale() {
           methodId: p.payMethodId,
           amount: p.amount,
         })),
+        boxId,
       };
 
       const res = await instance.post("/sale", payload, {
@@ -300,8 +322,10 @@ export function useCreateSale() {
   };
 
   return {
-    load: isLoading,
-    box: data?.data,
+    load: isCheckingBox,
+    isCreateSales,
+    boxCheckMessage,
+    isCheckingBox,
     payMethods: payMethods?.data ?? [],
 
     // Search

@@ -115,39 +115,37 @@ export default function ModalStore() {
               )}
             />
 
-            {selectedStoreId && (
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium">Caja de la tienda</label>
-                {user?.boxes?.length === 0 ? (
-                  <p className="text-xs text-default-400">
-                    No hay cajas disponibles en esta tienda.
-                  </p>
-                ) : (
-                  <div className="flex flex-col gap-2">
-                    {user?.boxes?.map((box) => (
-                      <Checkbox
-                        key={box.boxId}
-                        isSelected={selectedBoxId === box.boxId}
-                        onValueChange={(isSelected) => {
-                          if (isSelected) {
-                            setValue("boxId", box.boxId);
-                          } else if (selectedBoxId === box.boxId) {
-                            setValue("boxId", undefined as unknown as number);
-                          }
-                        }}
-                      >
-                        {box.boxName} ({box.serie})
-                      </Checkbox>
-                    ))}
-                  </div>
-                )}
-                {errors.boxId && (
-                  <span className="text-xs text-danger">
-                    {errors.boxId.message}
-                  </span>
-                )}
-              </div>
-            )}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Caja de la tienda</label>
+              {user?.boxes?.length === 0 ? (
+                <p className="text-xs text-default-400">
+                  No hay cajas disponibles en esta tienda.
+                </p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {user?.boxes?.map((box) => (
+                    <Checkbox
+                      key={box.boxId}
+                      isSelected={selectedBoxId === box.boxId}
+                      onValueChange={(isSelected) => {
+                        if (isSelected) {
+                          setValue("boxId", box.boxId);
+                        } else if (selectedBoxId === box.boxId) {
+                          setValue("boxId", undefined as unknown as number);
+                        }
+                      }}
+                    >
+                      {box.boxName} ({box.serie})
+                    </Checkbox>
+                  ))}
+                </div>
+              )}
+              {errors.boxId && (
+                <span className="text-xs text-danger">
+                  {errors.boxId.message}
+                </span>
+              )}
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-2" type="submit">

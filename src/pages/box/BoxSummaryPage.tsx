@@ -43,7 +43,7 @@ export default function BoxSummaryPage() {
   // Available boxes based on selected store
   const availableBoxes = useMemo(() => {
     if (!user?.boxes) return [];
-    return user.boxes.filter((b) => b.storeId === Number(selectedStoreId));
+    return user.boxes;
   }, [user?.boxes, selectedStoreId]);
 
   // Initialize box ID
