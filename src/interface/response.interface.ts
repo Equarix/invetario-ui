@@ -7,7 +7,7 @@ export interface ApiResponse<T> {
 }
 
 export interface PaginateResponse<T> {
-  items: T;
+  items: T[];
   totalItems: number;
   totalPages: number;
   page: number;
@@ -50,6 +50,16 @@ export interface Box {
   serie: string;
   serieProforma: string;
   storeId: number;
+  status: boolean;
+}
+
+export interface ResponseBoxItem {
+  boxId: number;
+  boxName: string;
+  serie: string;
+  serieProforma: string;
+  storeId: number;
+  store?: Store;
   status: boolean;
 }
 

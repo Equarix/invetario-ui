@@ -131,6 +131,12 @@ export const SideBarConfig: SideBarConfigProps = {
           label: "Métodos de Pago",
           children: [],
         },
+        {
+          href: "/mantenedores/cajas",
+          icon: <LuBox />,
+          label: "Cajas",
+          children: [],
+        },
       ],
     },
     {
