@@ -246,6 +246,7 @@ export interface SaleDetailResponse {
   productName: string;
   quantity: number;
   priceSell: number;
+  priceSelected: number;
 }
 
 export interface SaleMethodResponse {
@@ -254,6 +255,21 @@ export interface SaleMethodResponse {
   amount: number;
   paymethod: ResponsePayMethod;
 }
+
+// export interface ResponseSale {
+//   saleId: number;
+//   client: ResponseClient;
+//   user: UserResponse;
+//   total: number;
+//   observations: string;
+//   saleMethods: SaleMethodResponse[];
+//   saleDetails: SaleDetailResponse[];
+//   createdAt: string;
+//   status: boolean;
+//   typeDocument: string;
+//   typeMoney: string;
+//   store: ResponseStore;
+// }
 
 export interface ResponseSale {
   saleId: number;
@@ -268,6 +284,7 @@ export interface ResponseSale {
   typeDocument: string;
   typeMoney: string;
   store: ResponseStore;
+  box: Box;
 }
 
 export interface ResponseChats {

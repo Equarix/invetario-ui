@@ -10,10 +10,16 @@ interface SaleTicketProps {
 }
 
 export default function SaleTicket({ sale, config }: SaleTicketProps) {
+  const calculatedTotal = sale.saleDetails.reduce((acc, d) => {
+    const unitPrice = d.priceSelected ?? d.priceSell ?? 0;
+    return acc + d.quantity * unitPrice;
+  }, 0);
+
+  const displayTotal = calculatedTotal > 0 ? calculatedTotal : sale.total;
   const totalPaid = sale.saleMethods.reduce((acc, m) => acc + m.amount, 0);
-  const hasTurnedMethod = sale.saleMethods.some((m) => m.paymethod.turned);
-  const vuelto = hasTurnedMethod ? Math.max(0, totalPaid - sale.total) : 0;
-  const impRecibido = hasTurnedMethod ? totalPaid : sale.total;
+  const hasTurnedMethod = sale.saleMethods.some((m) => m.paymethod?.turned);
+  const vuelto = hasTurnedMethod ? Math.max(0, totalPaid - displayTotal) : 0;
+  const impRecibido = totalPaid > 0 ? totalPaid : displayTotal;
 
   return (
     <div
@@ -40,7 +46,7 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
         <p className="font-bold">COND. PAGO:</p>
         {sale.saleMethods.map((m) => (
           <div key={m.saleMethodId} className="flex justify-between">
-            <span>{m.paymethod.name}</span>
+            <span>{m.paymethod?.name || m.methodPayment}</span>
             <span>{m.amount.toFixed(2)}</span>
           </div>
         ))}
@@ -52,8 +58,10 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
       <div className="mb-2 space-y-1">
         <p className="font-bold">
           {sale.typeDocument} ELECTRÓNICA:{" "}
+          {sale.box?.serie ? `${sale.box.serie}-` : ""}
           {sale.saleId.toString().padStart(8, "0")}
         </p>
+        {sale.box && <p>CAJA: {sale.box.boxName}</p>}
         <p>CLIENTE: {sale.client.name.toUpperCase()}</p>
         <p>
           {sale.client.typeDocument}: {sale.client.documentNumber}
@@ -71,18 +79,21 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
 
       {/* Details */}
       <div className="mb-2">
-        {sale.saleDetails.map((d) => (
-          <div key={d.saleDetailId} className="mb-2">
-            <p>
-              {d.quantity} {d.product.name.toUpperCase()} -{" "}
-              {d.product.description || ""}
-            </p>
-            <div className="flex justify-end gap-4">
-              <span>UNIDAD {d.priceSell.toFixed(2)}</span>
-              <span>{(d.quantity * d.priceSell).toFixed(2)}</span>
+        {sale.saleDetails.map((d) => {
+          const unitPrice = d.priceSelected ?? d.priceSell ?? 0;
+          return (
+            <div key={d.saleDetailId} className="mb-2">
+              <p>
+                {d.quantity} {d.product.name.toUpperCase()} -{" "}
+                {d.product.description || ""}
+              </p>
+              <div className="flex justify-end gap-4">
+                <span>UNIDAD {unitPrice.toFixed(2)}</span>
+                <span>{(d.quantity * unitPrice).toFixed(2)}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="border-t border-dashed border-black my-2"></div>
@@ -90,7 +101,7 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
       {/* Totals */}
       <div className="flex justify-end gap-4 font-bold text-xs mb-4">
         <span>TOTAL:</span>
-        <span>{sale.total.toFixed(2)}</span>
+        <span>{displayTotal.toFixed(2)}</span>
       </div>
 
       <div className="border-t border-dashed border-black my-2"></div>
@@ -98,7 +109,7 @@ export default function SaleTicket({ sale, config }: SaleTicketProps) {
       {/* Footer */}
       <div className="text-center space-y-2 mt-4">
         <p className="font-bold">
-          SON: {numberToWords(sale.total)}{" "}
+          SON: {numberToWords(displayTotal)}{" "}
           {sale.typeMoney === "SOL" ? "SOLES" : "DOLARES"}
         </p>
         <p className="mt-4 italic">LA CALIDAD NO ES UNA CASUALIDAD</p>
