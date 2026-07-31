@@ -117,6 +117,7 @@ export default function CreateSale() {
   const [selectedProd, setSelectedProd] = useState<ResponseProductStore | null>(
     null,
   );
+  const [selectedPrice, setSelectedPrice] = useState<string>("");
   const [quantity, setQuantity] = useState("1");
   const [currentPayMethod, setCurrentPayMethod] = useState("");
   const [currentPayAmount, setCurrentPayAmount] = useState("");
@@ -132,8 +133,12 @@ export default function CreateSale() {
 
   const handleAddProduct = () => {
     if (selectedProd && quantity) {
-      addItem(selectedProd, Number(quantity));
+      const priceNum = selectedPrice
+        ? Number(selectedPrice)
+        : selectedProd.product.priceSell;
+      addItem(selectedProd, Number(quantity), priceNum);
       setSelectedProd(null);
+      setSelectedPrice("");
       setQuantity("1");
     }
   };
@@ -253,7 +258,14 @@ export default function CreateSale() {
                     const prod = products.find(
                       (p) => p.productStoreId === Number(key),
                     );
-                    if (prod) setSelectedProd(prod);
+                    if (prod) {
+                      setSelectedProd(prod);
+                      const defaultPrice = prod.product.priceSell;
+                      setSelectedPrice(String(defaultPrice));
+                    } else {
+                      setSelectedProd(null);
+                      setSelectedPrice("");
+                    }
                   }}
                 >
                   {(prod) => (
@@ -292,14 +304,50 @@ export default function CreateSale() {
               />
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end w-full">
-                <Input
-                  label="Precio"
-                  placeholder="0.00"
-                  variant="bordered"
-                  size="sm"
-                  value={selectedProd?.product.priceSell.toFixed(2) ?? ""}
-                  isDisabled
-                />
+                {selectedProd &&
+                selectedProd.product.productPrices &&
+                selectedProd.product.productPrices.length > 0 ? (
+                  <Select
+                    label="Precio"
+                    placeholder="Seleccione precio"
+                    variant="bordered"
+                    size="sm"
+                    selectedKeys={
+                      selectedPrice ? [selectedPrice] : []
+                    }
+                    onChange={(e) => setSelectedPrice(e.target.value)}
+                  >
+                    {[
+                      {
+                        productPriceId: 0,
+                        price: selectedProd.product.priceSell,
+                      },
+                      ...selectedProd.product.productPrices.filter(
+                        (p) => p.status !== false,
+                      ),
+                    ].map((p) => (
+                      <SelectItem
+                        key={String(p.price)}
+                        textValue={`S/ ${p.price.toFixed(2)}`}
+                      >
+                        S/ {p.price.toFixed(2)}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                ) : (
+                  <Input
+                    label="Precio"
+                    placeholder="0.00"
+                    variant="bordered"
+                    size="sm"
+                    value={
+                      selectedPrice ||
+                      (selectedProd?.product.priceSell.toFixed(2) ?? "")
+                    }
+                    onValueChange={setSelectedPrice}
+                    isDisabled={!selectedProd}
+                  />
+                )}
                 <Input
                   label="Cantidad"
                   type="number"

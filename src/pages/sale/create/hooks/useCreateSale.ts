@@ -224,6 +224,7 @@ export function useCreateSale() {
         saleDetails: items.map((i) => ({
           productId: i.product.productId,
           quantity: i.quantity,
+          price: i.price,
         })),
         saleMethods: payments.map((p) => ({
           methodId: p.payMethodId,
@@ -256,7 +257,14 @@ export function useCreateSale() {
     setCreatedSale(null);
   };
 
-  const addItem = (productStore: ResponseProductStore, quantity: number) => {
+  const addItem = (
+    productStore: ResponseProductStore,
+    quantity: number,
+    customPrice?: number,
+  ) => {
+    const finalPrice =
+      customPrice !== undefined ? customPrice : productStore.product.priceSell;
+
     const existingItem = items.find(
       (i) => i.productStoreId === productStore.productStoreId,
     );
@@ -276,7 +284,8 @@ export function useCreateSale() {
             ? {
                 ...i,
                 quantity: i.quantity + quantity,
-                total: (i.quantity + quantity) * i.price,
+                price: finalPrice,
+                total: (i.quantity + quantity) * finalPrice,
               }
             : i,
         ),
@@ -288,9 +297,9 @@ export function useCreateSale() {
           productStoreId: productStore.productStoreId,
           product: productStore.product,
           quantity,
-          price: productStore.product.priceSell,
+          price: finalPrice,
           discount: 0,
-          total: quantity * productStore.product.priceSell,
+          total: quantity * finalPrice,
           stock: productStore.actualStock,
         },
       ]);
