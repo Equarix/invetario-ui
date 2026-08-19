@@ -24,13 +24,14 @@ import { parseErrors } from "@/utils/parseErrors";
 export default function ModalStore() {
   const { user, storeId, boxId, handleSelectStore, handleSelectBox } =
     useAuth();
+
   const isRoleAdmin = user?.role === 0;
   const hasStoreAndBox = Boolean(
     storeId && storeId !== -1 && boxId && boxId !== -1,
   );
   const canClose = Boolean(isRoleAdmin || hasStoreAndBox);
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => !hasStoreAndBox);
 
   useEffect(() => {
     if (!hasStoreAndBox) {
