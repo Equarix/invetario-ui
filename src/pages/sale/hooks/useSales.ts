@@ -24,7 +24,7 @@ export function useSales() {
 
   const [selectedStore, setSelectedStore] = useState(storeId);
 
-  const salesQuery = useQuery<ApiResponse<PaginateResponse<ResponseSale[]>>>({
+  const salesQuery = useQuery<ApiResponse<PaginateResponse<ResponseSale>>>({
     queryKey: ["sales", currentPage, selectedStore],
     queryFn: async () => {
       const res = await instance.get("/sale", {

@@ -55,7 +55,6 @@ export default function ModalStore() {
     },
   });
 
-  const selectedStoreId = watch("storeId");
   const selectedBoxId = watch("boxId");
 
   const onSubmit = (data: ModalStoreSchemaType) => {

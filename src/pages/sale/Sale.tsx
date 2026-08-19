@@ -22,6 +22,7 @@ import {
   MdCalendarToday,
 } from "react-icons/md";
 import { useSales } from "./hooks/useSales";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { ResponseSale } from "@/interface/response.interface";
 import SaleTicket from "./create/components/SaleTicket";
 import Load from "@/components/components/load/Load";
@@ -42,6 +43,83 @@ export default function Sale() {
   const handlePrint = () => {
     window.print();
   };
+
+  const columns: ColumnDef<ResponseSale>[] = [
+    {
+      header: "Id",
+      cell: ({ row: { original: sale } }) => (
+        <span className="font-bold">
+          # {sale.saleId.toString().padStart(6, "0")}
+        </span>
+      ),
+    },
+    {
+      header: "Cliente",
+      cell: ({ row: { original: sale } }) => (
+        <User
+          description={sale.client.documentNumber}
+          name={sale.client.name}
+        >
+          {sale.client.name}
+        </User>
+      ),
+    },
+    {
+      header: "Total",
+      cell: ({ row: { original: sale } }) => (
+        <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">
+            {sale.typeMoney === "SOL" ? "S/ " : "$ "}{" "}
+            {sale.total.toFixed(2)}
+          </p>
+          <p className="text-bold text-tiny capitalize text-default-400">
+            {sale.typeDocument}
+          </p>
+        </div>
+      ),
+    },
+    {
+      header: "Fecha",
+      cell: ({ row: { original: sale } }) => (
+        <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">
+            {new Date(sale.createdAt).toLocaleDateString()}
+          </p>
+          <p className="text-bold text-tiny capitalize text-default-400">
+            {new Date(sale.createdAt).toLocaleTimeString()}
+          </p>
+        </div>
+      ),
+    },
+    {
+      header: "Estado",
+      cell: ({ row: { original: sale } }) => (
+        <Chip
+          className="capitalize"
+          color={statusColorMap[sale.status.toString()]}
+          size="sm"
+          variant="flat"
+        >
+          {sale.status ? "Completado" : "Anulado"}
+        </Chip>
+      ),
+    },
+    {
+      header: "Acciones",
+      cell: ({ row: { original: sale } }) => (
+        <div className="relative flex items-center gap-2">
+          <Button
+            isIconOnly
+            size="sm"
+            variant="light"
+            onPress={() => handleDetails(sale)}
+          >
+            <MdVisibility className="text-lg" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="p-6 flex flex-col gap-6 min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
@@ -138,82 +216,7 @@ export default function Sale() {
         }
         data={sales}
         emptyContent="No se encontraron ventas"
-        columns={[
-          {
-            header: "Id",
-            cell: ({ row: { original: sale } }) => (
-              <span className="font-bold">
-                # {sale.saleId.toString().padStart(6, "0")}
-              </span>
-            ),
-          },
-          {
-            header: "Cliente",
-            cell: ({ row: { original: sale } }) => (
-              <User
-                description={sale.client.documentNumber}
-                name={sale.client.name}
-              >
-                {sale.client.name}
-              </User>
-            ),
-          },
-          {
-            header: "Total",
-            cell: ({ row: { original: sale } }) => (
-              <div className="flex flex-col">
-                <p className="text-bold text-small capitalize">
-                  {sale.typeMoney === "SOL" ? "S/ " : "$ "}{" "}
-                  {sale.total.toFixed(2)}
-                </p>
-                <p className="text-bold text-tiny capitalize text-default-400">
-                  {sale.typeDocument}
-                </p>
-              </div>
-            ),
-          },
-          {
-            header: "Fecha",
-            cell: ({ row: { original: sale } }) => (
-              <div className="flex flex-col">
-                <p className="text-bold text-small capitalize">
-                  {new Date(sale.createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-bold text-tiny capitalize text-default-400">
-                  {new Date(sale.createdAt).toLocaleTimeString()}
-                </p>
-              </div>
-            ),
-          },
-          {
-            header: "Estado",
-            cell: ({ row: { original: sale } }) => (
-              <Chip
-                className="capitalize"
-                color={statusColorMap[sale.status.toString()]}
-                size="sm"
-                variant="flat"
-              >
-                {sale.status ? "Completado" : "Anulado"}
-              </Chip>
-            ),
-          },
-          {
-            header: "Acciones",
-            cell: ({ row: { original: sale } }) => (
-              <div className="relative flex items-center gap-2">
-                <Button
-                  isIconOnly
-                  size="sm"
-                  variant="light"
-                  onPress={() => handleDetails(sale)}
-                >
-                  <MdVisibility className="text-lg" />
-                </Button>
-              </div>
-            ),
-          },
-        ]}
+        columns={columns}
       />
       <Modal
         isOpen={isOpen}

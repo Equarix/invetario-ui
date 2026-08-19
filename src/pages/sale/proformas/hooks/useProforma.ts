@@ -38,7 +38,7 @@ export const useProforma = () => {
   });
 
   // Fetch proformas with pagination and store filtering
-  const { data: proformasResponse, isLoading: isLoadingProformas, refetch } = useQuery<ApiResponse<PaginateResponse<ResponseProforma[]>>>({
+  const { data: proformasResponse, isLoading: isLoadingProformas, refetch } = useQuery<ApiResponse<PaginateResponse<ResponseProforma>>>({
     queryKey: ["proformas", page, limit, storeId],
     queryFn: async () => {
       const params = new URLSearchParams({

@@ -3,7 +3,6 @@ import { useAlert } from "@/hooks/useAlert";
 import { useDebounce } from "@/hooks/useDebounce";
 import type {
   ApiResponse,
-  ResponseBox,
   ResponseClient,
   ResponseProductStore,
   ResponsePayMethod,
@@ -12,8 +11,7 @@ import type {
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import type { ClientInput } from "@/schemas/client/client.schema";
 
 export interface SaleItem {
@@ -51,7 +49,6 @@ export interface DayBoxIsCreateSalesResponse {
 export function useCreateSale() {
   const { token, storeId, boxId } = useAuth();
   const { showAlert } = useAlert();
-  const navigate = useNavigate();
 
   // Search states
   const [clientTerm, setClientTerm] = useState("");

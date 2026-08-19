@@ -13,6 +13,7 @@ import type {
 } from "@/interface/response.interface";
 import { instance } from "@/libs/axios";
 import { Chip, Pagination, Tooltip, useDisclosure } from "@heroui/react";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
 import { LuPen, LuPlus, LuTrash } from "react-icons/lu";
 import { useParams } from "react-router";
@@ -46,7 +47,7 @@ export default function StoreProducts() {
     data: resProducts,
     isLoading: isLoadingProducts,
     refetch,
-  } = useQuery<ApiResponse<PaginateResponse<ResponseProductStore[]>>>({
+  } = useQuery<ApiResponse<PaginateResponse<ResponseProductStore>>>({
     queryKey: ["products-store", storeId, currentPage],
     queryFn: async () => {
       const res = await instance.get(`/store/${storeId}/products`, {
@@ -89,6 +90,89 @@ export default function StoreProducts() {
     setIsOpenDelete({ isOpen: false, productStoreId: null });
   };
 
+  const columns: ColumnDef<ResponseProductStore>[] = [
+    {
+      header: "Imagen",
+      cell: ({ row: { original } }) => (
+        <img
+          src={`${ENV.API_URL}${original.product.image.imageUrl}`}
+          alt={original.product.name}
+          className="w-10 h-10 object-cover rounded-md"
+        />
+      ),
+    },
+    {
+      header: "Codigo Interno",
+      accessorKey: "product.codeInternal",
+    },
+    {
+      header: "Nombre",
+      accessorKey: "product.name",
+    },
+    {
+      header: "Stock Actual",
+      accessorKey: "actualStock",
+    },
+    {
+      header: "Stock Minimo",
+      accessorKey: "minStock",
+    },
+    {
+      header: "Stock Maximo",
+      accessorKey: "maxStock",
+    },
+    {
+      header: "Precio Promedio",
+      accessorKey: "avgCost",
+    },
+    {
+      header: "Precio de Venta",
+      accessorKey: "product.priceSell",
+    },
+    {
+      header: "Estado",
+      cell: ({ row: { original } }) => (
+        <Chip
+          color={original.status ? "success" : "danger"}
+          classNames={{
+            base: "text-white",
+          }}
+        >
+          {original.status ? "Activo" : "Inactivo"}
+        </Chip>
+      ),
+    },
+    {
+      header: "Acciones",
+      cell: ({
+        row: { original },
+      }) => (
+        <div className="flex items-center gap-2">
+          <Tooltip color="primary" content="Editar Producto en Almacén">
+            <Chip
+              color="primary"
+              onClick={() =>
+                setIsOpenEdit({ isOpen: true, productStoreId: original.productStoreId })
+              }
+            >
+              <LuPen />
+            </Chip>
+          </Tooltip>
+          <Tooltip color="danger" content="Eliminar Producto del Almacén">
+            <Chip
+              color="danger"
+              onClick={() =>
+                setIsOpenDelete({ isOpen: true, productStoreId: original.productStoreId })
+              }
+            >
+              <LuTrash />
+            </Chip>
+          </Tooltip>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="flex flex-col p-4 h-full w-full">
       <Load loading={isLoadingStore} />
@@ -126,90 +210,7 @@ export default function StoreProducts() {
             </div>
           ) : null
         }
-        columns={[
-          {
-            header: "Imagen",
-            cell: ({ row: { original } }) => (
-              <img
-                src={`${ENV.API_URL}${original.product.image.imageUrl}`}
-                alt={original.product.name}
-                className="w-10 h-10 object-cover rounded-md"
-              />
-            ),
-          },
-          {
-            header: "Codigo Interno",
-            accessorKey: "product.codeInternal",
-          },
-          {
-            header: "Nombre",
-            accessorKey: "product.name",
-          },
-          {
-            header: "Stock Actual",
-            accessorKey: "actualStock",
-          },
-          {
-            header: "Stock Minimo",
-            accessorKey: "minStock",
-          },
-          {
-            header: "Stock Maximo",
-            accessorKey: "maxStock",
-          },
-          {
-            header: "Precio Promedio",
-            accessorKey: "avgCost",
-          },
-          {
-            header: "Precio de Venta",
-            accessorKey: "product.priceSell",
-          },
-          {
-            header: "Estado",
-            cell: ({ row: { original } }) => (
-              <Chip
-                color={original.status ? "success" : "danger"}
-                classNames={{
-                  base: "text-white",
-                }}
-              >
-                {original.status ? "Activo" : "Inactivo"}
-              </Chip>
-            ),
-          },
-          {
-            header: "Acciones",
-            cell: ({
-              row: {
-                original: { productStoreId },
-              },
-            }) => (
-              <div className="flex items-center gap-2">
-                <Tooltip color="primary" content="Editar Producto en Almacén">
-                  <Chip
-                    color="primary"
-                    onClick={() =>
-                      setIsOpenEdit({ isOpen: true, productStoreId })
-                    }
-                  >
-                    <LuPen />
-                  </Chip>
-                </Tooltip>
-                <Tooltip color="danger" content="Eliminar Producto del Almacén">
-                  <Chip
-                    color="danger"
-                    onClick={() =>
-                      setIsOpenDelete({ isOpen: true, productStoreId })
-                    }
-                  >
-                    <LuTrash />
-                  </Chip>
-                </Tooltip>
-              </div>
-            ),
-          },
-        ]}
+        columns={columns}
       />
 
       <CreateProduct isOpen={isOpen} onClose={onClose} onConfirm={refetch} />

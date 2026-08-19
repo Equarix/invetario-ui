@@ -2,7 +2,9 @@ import Container from "@/components/components/container/Container";
 import Table from "@/components/components/table/Table";
 import Header from "@/components/layouts/header/Header";
 import { ENV } from "@/config/env";
+import type { Product } from "@/interface/response.interface";
 import { Chip, Image, Pagination, Tooltip, useDisclosure } from "@heroui/react";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import { LuCar, LuPen, LuTrash } from "react-icons/lu";
 import { Link, useNavigate } from "react-router";
@@ -15,6 +17,108 @@ export default function ProductsPage() {
   const { onOpen, isOpen, onOpenChange } = useDisclosure();
   const [productId, setProductId] = useState<number>(-1);
   const { data, isLoading, refetch, pagination, kpi } = useProduct();
+
+  const columns: ColumnDef<Product>[] = [
+    {
+      header: "Imagen",
+      cell({
+        row: {
+          original: { image },
+        },
+      }) {
+        return (
+          <Image
+            src={ENV.API_URL + image.imageUrl}
+            alt="Product Image"
+            width={50}
+            height={50}
+            className="object-cover"
+          />
+        );
+      },
+    },
+    {
+      header: "Código",
+      accessorKey: "code",
+    },
+    {
+      header: "SKU",
+      accessorKey: "codeInternal",
+    },
+    {
+      header: "Nombre",
+      accessorKey: "name",
+    },
+    {
+      header: "Descripción",
+      accessorKey: "description",
+    },
+    {
+      header: "Categoria",
+      accessorFn: (row) => row.category.name,
+    },
+    {
+      header: "Unidad",
+      accessorFn: (row) => row.unit.name,
+    },
+    {
+      header: "Precio de Compra",
+      accessorKey: "priceBuy",
+    },
+    {
+      header: "Precio de Venta",
+      accessorKey: "priceSell",
+    },
+    {
+      header: "Stock Minimo",
+      accessorKey: "minStock",
+    },
+    {
+      header: "Estado",
+      cell: ({ row: { original } }) => (
+        <Chip
+          color={original.status ? "success" : "danger"}
+          classNames={{
+            base: "text-white",
+          }}
+        >
+          {original.status ? "Activo" : "Inactivo"}
+        </Chip>
+      ),
+    },
+    {
+      header: "Acciones",
+      cell: ({ row: { original } }) => (
+        <div className="flex items-center gap-2">
+          <Tooltip
+            color="primary"
+            content={`Editar Producto ${original.name}`}
+          >
+            <Link to={`/productos/editar/${original.productId}`}>
+              <Chip color="primary">
+                <LuPen />
+              </Chip>
+            </Link>
+          </Tooltip>
+
+          <Tooltip
+            color="danger"
+            content={`Eliminar Producto ${original.name}`}
+          >
+            <Chip
+              color="danger"
+              onClick={() => {
+                setProductId(original.productId);
+                onOpen();
+              }}
+            >
+              <LuTrash />
+            </Chip>
+          </Tooltip>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <Container>
@@ -72,107 +176,7 @@ export default function ProductsPage() {
             </div>
           ) : null
         }
-        columns={[
-          {
-            header: "Imagen",
-            cell({
-              row: {
-                original: { image },
-              },
-            }) {
-              return (
-                <Image
-                  src={ENV.API_URL + image.imageUrl}
-                  alt="Product Image"
-                  width={50}
-                  height={50}
-                  className="object-cover"
-                />
-              );
-            },
-          },
-          {
-            header: "Código",
-            accessorKey: "code",
-          },
-          {
-            header: "SKU",
-            accessorKey: "codeInternal",
-          },
-          {
-            header: "Nombre",
-            accessorKey: "name",
-          },
-          {
-            header: "Descripción",
-            accessorKey: "description",
-          },
-          {
-            header: "Categoria",
-            accessorFn: (row) => row.category.name,
-          },
-          {
-            header: "Unidad",
-            accessorFn: (row) => row.unit.name,
-          },
-          {
-            header: "Precio de Compra",
-            accessorKey: "priceBuy",
-          },
-          {
-            header: "Precio de Venta",
-            accessorKey: "priceSell",
-          },
-          {
-            header: "Stock Minimo",
-            accessorKey: "minStock",
-          },
-          {
-            header: "Estado",
-            cell: ({ row: { original } }) => (
-              <Chip
-                color={original.status ? "success" : "danger"}
-                classNames={{
-                  base: "text-white",
-                }}
-              >
-                {original.status ? "Activo" : "Inactivo"}
-              </Chip>
-            ),
-          },
-          {
-            header: "Acciones",
-            cell: ({ row: { original } }) => (
-              <div className="flex items-center gap-2">
-                <Tooltip
-                  color="primary"
-                  content={`Editar Producto ${original.name}`}
-                >
-                  <Link to={`/productos/editar/${original.productId}`}>
-                    <Chip color="primary">
-                      <LuPen />
-                    </Chip>
-                  </Link>
-                </Tooltip>
-
-                <Tooltip
-                  color="danger"
-                  content={`Eliminar Producto ${original.name}`}
-                >
-                  <Chip
-                    color="danger"
-                    onClick={() => {
-                      setProductId(original.productId);
-                      onOpen();
-                    }}
-                  >
-                    <LuTrash />
-                  </Chip>
-                </Tooltip>
-              </div>
-            ),
-          },
-        ]}
+        columns={columns}
         isLoading={isLoading}
       />
       <DeleteModal

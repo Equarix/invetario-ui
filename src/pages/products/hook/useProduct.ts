@@ -19,7 +19,7 @@ export function useProduct() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, refetch } = useQuery<
-    ApiResponse<PaginateResponse<Product[]>>
+    ApiResponse<PaginateResponse<Product>>
   >({
     queryKey: ["products", currentPage],
     queryFn: async () => {

@@ -22,6 +22,7 @@ import {
   MdOutlineTrendingUp,
   MdOutlineGroup,
 } from "react-icons/md";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { ResponseProforma } from "@/interface/response.interface";
 import Load from "@/components/components/load/Load";
 import Table from "@/components/components/table/Table";
@@ -44,6 +45,71 @@ export default function Proforma() {
   const calculateTotal = (details: ResponseProforma["details"]) => {
     return details.reduce((acc, detail) => acc + (detail.price * detail.quantity), 0);
   };
+
+  const columns: ColumnDef<ResponseProforma>[] = [
+    {
+      header: "Id",
+      cell: ({ row: { original: proforma } }) => (
+        <span className="font-bold">
+          # {proforma.proformaId.toString().padStart(6, "0")}
+        </span>
+      ),
+    },
+    {
+      header: "Cliente",
+      cell: ({ row: { original: proforma } }) => (
+        <User
+          description={proforma.client.documentNumber}
+          name={proforma.client.name}
+        >
+          {proforma.client.name}
+        </User>
+      ),
+    },
+    {
+      header: "Almacén",
+      cell: ({ row: { original: proforma } }) => (
+        <span className="text-sm">{proforma.store.name}</span>
+      ),
+    },
+    {
+      header: "Fecha",
+      cell: ({ row: { original: proforma } }) => (
+        <div className="flex flex-col">
+          <p className="text-bold text-small capitalize">
+            {new Date(proforma.createdAt).toLocaleDateString()}
+          </p>
+          <p className="text-bold text-tiny capitalize text-default-400">
+            {new Date(proforma.createdAt).toLocaleTimeString()}
+          </p>
+        </div>
+      ),
+    },
+    {
+      header: "Total",
+      cell: ({ row: { original: proforma } }) => (
+        <span className="font-bold">
+          S/ {calculateTotal(proforma.details).toFixed(2)}
+        </span>
+      ),
+    },
+    {
+      header: "Acciones",
+      cell: ({ row: { original: proforma } }) => (
+        <div className="relative flex items-center gap-2">
+          <Button
+            isIconOnly
+            size="sm"
+            variant="light"
+            color="primary"
+            onPress={() => handleDetails(proforma)}
+          >
+            <MdVisibility className="text-lg" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="p-6 flex flex-col gap-6 min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
@@ -146,70 +212,7 @@ export default function Proforma() {
         }
         data={proformas}
         emptyContent="No se encontraron proformas"
-        columns={[
-          {
-            header: "Id",
-            cell: ({ row: { original: proforma } }) => (
-              <span className="font-bold">
-                # {proforma.proformaId.toString().padStart(6, "0")}
-              </span>
-            ),
-          },
-          {
-            header: "Cliente",
-            cell: ({ row: { original: proforma } }) => (
-              <User
-                description={proforma.client.documentNumber}
-                name={proforma.client.name}
-              >
-                {proforma.client.name}
-              </User>
-            ),
-          },
-          {
-            header: "Almacén",
-            cell: ({ row: { original: proforma } }) => (
-              <span className="text-sm">{proforma.store.name}</span>
-            ),
-          },
-          {
-            header: "Fecha",
-            cell: ({ row: { original: proforma } }) => (
-              <div className="flex flex-col">
-                <p className="text-bold text-small capitalize">
-                  {new Date(proforma.createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-bold text-tiny capitalize text-default-400">
-                  {new Date(proforma.createdAt).toLocaleTimeString()}
-                </p>
-              </div>
-            ),
-          },
-          {
-            header: "Total",
-            cell: ({ row: { original: proforma } }) => (
-              <span className="font-bold">
-                S/ {calculateTotal(proforma.details).toFixed(2)}
-              </span>
-            ),
-          },
-          {
-            header: "Acciones",
-            cell: ({ row: { original: proforma } }) => (
-              <div className="relative flex items-center gap-2">
-                <Button
-                  isIconOnly
-                  size="sm"
-                  variant="light"
-                  color="primary"
-                  onPress={() => handleDetails(proforma)}
-                >
-                  <MdVisibility className="text-lg" />
-                </Button>
-              </div>
-            ),
-          },
-        ]}
+        columns={columns}
       />
 
       <Modal

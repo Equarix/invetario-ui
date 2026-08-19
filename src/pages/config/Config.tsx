@@ -104,6 +104,7 @@ export default function Config() {
         productName: "PRODUCTO EJEMPLO",
         quantity: 2,
         priceSell: 75.25,
+        priceSelected: 75.25,
         saleDetailId: 1,
         product: {
           productId: 1,
@@ -147,16 +148,16 @@ export default function Config() {
     saleMethods: [],
     observations: "VISTA PREVIA",
     store: {
-      name: "TIENDA PRINCIPAL",
-      address: "Av. Principal 123",
-      code: "STORE001",
+      address: "AV. PRINCIPAL 123",
+      code: "ALM001",
       createdAt: new Date().toISOString(),
-      maxCapacity: 100,
-      observations: "SUCURSAL PRINCIPAL",
+      maxCapacity: 1000,
+      name: "ALMACÉN PRINCIPAL",
+      observations: "",
       phone: "987654321",
       status: true,
       storeId: 1,
-      type: "FÍSICA",
+      type: "PRINCIPAL",
       user: {
         firstName: "VENDEDOR",
         email: "empleado@ejemplo.com",
@@ -168,6 +169,14 @@ export default function Config() {
         boxes: [],
         stores: [],
       },
+    },
+    box: {
+      boxId: 1,
+      boxName: "CAJA 01",
+      serie: "B001",
+      serieProforma: "P001",
+      storeId: 1,
+      status: true,
     },
   };
 
