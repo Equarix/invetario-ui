@@ -25,9 +25,18 @@ export default function ModalStore() {
   const { user, storeId, boxId, handleSelectStore, handleSelectBox } =
     useAuth();
   const isRoleAdmin = user?.role === 0;
-  const canClose = Boolean(isRoleAdmin || (storeId && storeId !== -1));
+  const hasStoreAndBox = Boolean(
+    storeId && storeId !== -1 && boxId && boxId !== -1,
+  );
+  const canClose = Boolean(isRoleAdmin || hasStoreAndBox);
 
-  const [isOpen, setIsOpen] = useState(() => !canClose);
+  const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    if (!hasStoreAndBox) {
+      setIsOpen(true);
+    }
+  }, [hasStoreAndBox]);
 
   useEffect(() => {
     const handleOpen = () => setIsOpen(true);
